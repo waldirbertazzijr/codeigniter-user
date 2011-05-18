@@ -9,11 +9,12 @@
  * @author		Waldir Bertazzi Junior
  * @link		http://waldir.org/orion/
  */
-class CI_User {
 
-	public $user_permissions 		= array();
+define('DONT_UPDATE_LOGIN', false);
+
+class CI_User {
+	
 	public $user_data 				= array();
-	private $current_session 		= 0;
 	protected $CI;
 
 	/**
@@ -27,10 +28,6 @@ class CI_User {
 		// load session library
 		$this->CI =& get_instance();
 		$this->CI->load->library('session');
-		
-		// check if already logged
-		if($this->CI->session->userdata('logged'))
-			$this->validate_session();
 	}
 	
 	/**
@@ -43,10 +40,12 @@ class CI_User {
 	 * 
 	 */
 	function on_invalid_session($destiny){
+		$this->CI->benchmark->mark('check_invalid_session_start');
 		if(!$this->validate_session()){
 			$this->CI->session->set_flashdata('error_message', 'Invalid session.');
 			redirect($destiny);
 		}
+		$this->CI->benchmark->mark('check_invalid_session_end');
 	}
 	
 	/**
@@ -57,11 +56,13 @@ class CI_User {
 	 *
 	 */
 	function on_valid_session($destiny){
+		$this->CI->benchmark->mark('check_valid_session_start');
 		if($this->validate_session())
 			redirect($destiny);
 		// if its not logged we must clear the flashdata because it was filled on validate
-		// with invalid data maybe
+		// with invalid data
 		$this->CI->session->set_flashdata('error_message', '');
+		$this->CI->benchmark->mark('check_valid_session_end');
 	}
 	
 	/**
@@ -70,7 +71,7 @@ class CI_User {
 	 * @return boolean
 	 */
 	function validate_session(){
-		if($this->login($this->CI->session->userdata('login'), $this->CI->session->userdata('pw'))){
+		if($this->login($this->CI->session->userdata('login'), $this->CI->session->userdata('pw'), DONT_UPDATE_LOGIN)){
 			return true;
 		}
 		$this->CI->session->set_flashdata("message", "Invalid session.");
@@ -85,15 +86,16 @@ class CI_User {
 	 * @param string $login - The login to validade
 	 * @param string $password - The password to validate
 	 */
-	function login($login, $password){
+	function login($login, $password, $update_last_login = true){
 		$user_query = $this->CI->db->get_where('users', array('login'=>$login, 'password'=>md5($password)));
 		if($user_query->num_rows()==1){
 			// save the user data
 			$this->user_data = $user_query->row();
-			$this->load_permission($this->user_data->id);									
 			$this->create_session($login, $password);
+			
 			// updates last login
-			$this->update_last_login();
+			if($update_last_login)
+				$this->update_last_login();
 			return true;
 		} else {
 			$this->CI->session->set_flashdata('error_message', 'Login or password invalid.');
@@ -123,12 +125,30 @@ class CI_User {
 	}
 	
 	/**
+	 * Get username - return the logged user username.
+	 * 
+	 * @return int
+	 */
+	function get_username(){
+		return $this->CI->session->userdata('login');
+	}
+	
+	/**
 	 * Get name - return the logged user name.
 	 * 
 	 * @return string
 	 */
 	function get_name(){
 		return $this->user_data->name;
+	}
+	
+	/**
+	 * Get sex - return the logged user sex.
+	 * 
+	 * @return int
+	 */
+	function get_sex(){
+		return $this->user_data->sex;
 	}
 
 	/**
@@ -151,21 +171,6 @@ class CI_User {
 	}
 	
 	/**
-	 * Has Permission - returns true if the user has the received
-	 * permission. Simply pass the name of the permission.
-	 * 
-	 * @param string $permission_name - The name of the permission
-	 * @return boolean
-	 */
-	function has_permission($permission_name){
-		if( ! $this->CI->session->userdata('logged'))
-			return false;
-		if (in_array($permission_name, $this->user_permission))
-			return true;
-		return false;
-	}
-	
-	/**
 	 * Update Password - update the password where it is needed.
 	 * note: it wont update the database.
 	 * 
@@ -179,6 +184,20 @@ class CI_User {
 	}
 	
 	/**
+	 * Update Login - update the login where it is needed.
+	 * note: it wont update the database.
+	 * 
+	 * @param string $new_pw the new login
+	 * @return boolean
+	 */
+	function update_login($new_login){
+		$this->CI->session->set_userdata(array('login'=>$new_login));
+		$this->user_data->login = $new_login;
+		return true;
+	}
+	
+	
+	/**
 	 * Destroy User - Destroy the user where its needed.
 	 * 
 	 * @return boolean
@@ -189,23 +208,6 @@ class CI_User {
 		unset($this->user_data);
 		return true;
 	}
-	
-	/**
-	 * Load Permission - Aux function to load the permissions
-	 */
-	function load_permission(){
-		$permissions = $this->CI->db->join('users_permissions', 'users_permissions.permission_id = permissions.id')
-									->get_where('permissions', array('users_permissions.user_id'=>$this->get_id()))
-									->result();
-		
-		$user_permissions = array();
-		
-		foreach($permissions as $permission){
-			$user_permissions[] = $permission->name;
-		}
-		$this->user_permission = $user_permissions;
-	}
-	
 }
 
 ?>

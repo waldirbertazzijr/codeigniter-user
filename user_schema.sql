@@ -1,3 +1,7 @@
+--
+-- Table structure for table `permissions`
+--
+
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -10,15 +14,14 @@ CREATE TABLE `permissions` (
   `name` varchar(12) NOT NULL,
   `description` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 ;
 
 --
 -- Dumping data for table `permissions`
 --
 
-INSERT INTO `permissions` VALUES(1, 'admin', 'Global admin.');
-INSERT INTO `permissions` VALUES(3, 'create', 'Create posts.');
-INSERT INTO `permissions` VALUES(4, 'delete', 'Delete posts.');
+INSERT INTO `permissions` VALUES(1, 'su', 'User is a superuser.');
+INSERT INTO `permissions` VALUES(1, 'admin', 'User is admin.');
 
 -- --------------------------------------------------------
 
@@ -34,13 +37,13 @@ CREATE TABLE `users` (
   `last_login` date NOT NULL,
   `active` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 ;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` VALUES(1, 'Administrador', 'admin', '21232f297a57a5a743894a0e4a801fc3', '2011-03-03', 1);
+INSERT INTO `users` VALUES(1, 'Administrator', 'admin', '21232f297a57a5a743894a0e4a801fc3', '2000-01-01', 1);
 
 -- --------------------------------------------------------
 
@@ -60,9 +63,6 @@ CREATE TABLE `users_permissions` (
 --
 
 INSERT INTO `users_permissions` VALUES(1, 1);
-INSERT INTO `users_permissions` VALUES(1, 2);
-INSERT INTO `users_permissions` VALUES(1, 4);
-INSERT INTO `users_permissions` VALUES(7, 2);
 
 --
 -- Constraints for table `users_permissions`

@@ -7,18 +7,20 @@ class Main extends CI_Controller {
 		$this->load->library('user');
 		$this->load->helper('url');
 		
-		// This will send users back to login if their session
-		// isnt valid.
+		/*
+		 * This function prevents any method on this
+		 * controller to be executed if the user isnt
+		 * logged in properly.
+		 */
 		$this->user->on_invalid_session('login');
 	}
 	
-	// If the user can get to the functions its certanly
-	// logged in because we put the redirect on invalid
-	// on our controller. Every time this class is
-	// created, it will run.
+	/*
+	 * If the user can reach this function its logged in.
+	 */
 	function index(){
 		
-		// Load the welcome screen.
+		// Show the welcome screen.
 		$this->load->view('home');
 	}
 }
