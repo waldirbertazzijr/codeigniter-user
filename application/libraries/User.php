@@ -91,6 +91,7 @@ class CI_User {
 		if($user_query->num_rows()==1){
 			// save the user data
 			$this->user_data = $user_query->row();
+			$this->load_permission($this->user_data->id);
 			$this->create_session($login, $password);
 			
 			// updates last login
@@ -181,6 +182,37 @@ class CI_User {
 		$this->CI->session->set_userdata(array('pw'=>$new_pw));
 		$this->user_data->password = $new_pw;
 		return true;
+	}
+	
+	/**
+	 * Has Permission - returns true if the user has the received
+	 * permission. Simply pass the name of the permission.
+	 * 
+	 * @param string $permission_name - The name of the permission
+	 * @return boolean
+	 */
+	function has_permission($permission_name){
+		if( ! $this->CI->session->userdata('logged'))
+			return false;
+		if (in_array($permission_name, $this->user_permission))
+			return true;
+		return false;
+	}
+	
+	/**
+	 * Load Permission - Aux function to load the permissions
+	 */
+	function load_permission(){
+		$permissions = $this->CI->db->join('users_permissions', 'users_permissions.permission_id = permissions.id')
+									->get_where('permissions', array('users_permissions.user_id'=>$this->get_id()))
+									->result();
+		
+		$user_permissions = array();
+		
+		foreach($permissions as $permission){
+			$user_permissions[] = $permission->name;
+		}
+		$this->user_permission = $user_permissions;
 	}
 	
 	/**
