@@ -21,7 +21,7 @@ CREATE TABLE `permissions` (
 --
 
 INSERT INTO `permissions` VALUES(1, 'su', 'User is a superuser.');
-INSERT INTO `permissions` VALUES(1, 'admin', 'User is admin.');
+INSERT INTO `permissions` VALUES(2, 'admin', 'User is admin.');
 
 -- --------------------------------------------------------
 
