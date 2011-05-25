@@ -4,9 +4,13 @@ The library works by simple passwords md5 hashing with some functions that can h
 I'll adding things to it as I need em. Fell free to request a pull.
 
 ## Quick Start
-* Import the _userschema.sql_ to your database. It will creates 3 tables that contains the user, permissions and the linktable.
-* After that, merge the content of this rep with you Codeigniter root. It will add the library on your /application/library/ dir.
-* If you like, you can see the demo that is included with this library. It contains a simple login and private page for you to get started.
+* Import the _userschema.sql_ to your database.
+* Merge the content of this rep with you Codeigniter root.
+* You may need to set your secret session key on your config file.
+* Head to http://example.com/index.php/login/ and try it.
+
+## Adding a user
+For now, you have to query the database and insert a new user on users table. The links between users and permissions are done on the link table manually for now.
 
 ## Documentation
 I still working on a good documentation for the project, it will be released soon. Thanks.
