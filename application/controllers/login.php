@@ -6,6 +6,7 @@ class Login extends CI_Controller {
 		
 		// Load the Library
 		$this->load->library('user');
+        $this->load->helper('url');
 
 	}
 	
@@ -42,8 +43,7 @@ class Login extends CI_Controller {
 	// Simple logout function
 	function logout()
 	{
-		 This function will destroy every trace of the logged
-		// user on our system.
+		// Remove user session.
 		$this->user->destroy_user();
 		
 		// Bye, thanks! :)

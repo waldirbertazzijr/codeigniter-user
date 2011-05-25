@@ -32,10 +32,10 @@ class CI_User {
 	 * 
 	 */
 	function __construct(){
+		$this->CI =& get_instance();
+        
         // load session library
         $this->CI->load->library('session');
-
-		$this->CI =& get_instance();
 	}
 	
 	/**
@@ -111,7 +111,6 @@ class CI_User {
 			return true;
         } else {
             // Invalid credentials
-			$this->CI->session->set_flashdata('error_message', 'Login or password invalid.');
 			return false;
 		}
 	}
