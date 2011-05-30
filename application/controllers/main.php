@@ -23,5 +23,21 @@ class Main extends CI_Controller {
 		// Show the welcome screen.
 		$this->load->view('home');
 	}
+
+    function add_user(){
+        $this->load->library('user_manager');
+
+        var_dump($this->user_manager->save_user('Testando', 'teste', 'teste'));
+    }
+
+    function add_permission_user(){
+        $this->load->library('user_manager');
+        var_dump($this->user_manager->add_permission(2, 1));
+    }
+
+    function new_permission(){
+        $this->load->library('user_manager');
+        var_dump($this->user_manager->save_permission('Testing', 'A testing permission'));
+    }
 }
 ?>
