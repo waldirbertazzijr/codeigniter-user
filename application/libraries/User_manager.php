@@ -29,7 +29,7 @@ class CI_User_manager {
         $this->CI->load->library('session');
     }
 
-
+    // Saves a new user
     function save_user($full_name, $login, $password, $active = 1, $permissions=array()) {
         $hashed_password = md5($password);
         
@@ -47,24 +47,29 @@ class CI_User_manager {
                 return $new_user_id;
             }
         } else {
+            // Login already exists
             return false;
         }
     }
-
+    
+    // Delete the user
     function delete_user($user_id){
         return $this->CI->db->delete('users', array('id'=>$user_id));
     }
 
+    // Check if there is already a login with that name
     function login_exists($login_name){
         $exists = $this->CI->db->get_where('users', array('login'=>$login_name))->row();
         return sizeof($exists) != 0;
     }
 
+    // Checks if user already has the permission on database
     function user_has_permission($user_id, $permission_id){
         $result = $this->CI->db->get_where('users_permissions', array('user_id' => $user_id, 'permission_id' =>$permission_id));
         return ( $result->num_rows() == 1 );
     }
 
+    // Links a permission with a user
     function add_permission($user_id, $permissions) {
         // If array received we must call this recursively
         if(is_array($permissions)) {
@@ -86,6 +91,7 @@ class CI_User_manager {
         }
     }
 
+    // Creates a new permission
     function save_permission($permission_name, $permission_description){
         $exists = $this->CI->db->get_where('permissions', array('name'=>$permission_name));
         if( $exists->num_rows() >= 1 ) {
@@ -100,6 +106,7 @@ class CI_User_manager {
         }
     }
 
+    // Gets all users with a selected permission
     function get_users_with_permission($permission_name){
         $permission = $this->CI->db->get_where('permissions', array('name'=>$permission_name))->row();
         if(sizeof($permission) == 0) {
