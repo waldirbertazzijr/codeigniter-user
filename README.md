@@ -47,8 +47,7 @@ There is a separated library for user managing. After setting up the database co
 	$permission_id = $this->user_manager->save_permission('editor', 'The editors of my website.');
 
 ### Adding a new user
-
-$fullname = "Michael Jackson";
+	$fullname = "Michael Jackson";
 	$login = "MJ"
 	$password = "beat_it";
 	$active = true;
