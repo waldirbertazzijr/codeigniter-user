@@ -12,49 +12,52 @@ I'll adding things to it as I need em. Fell free to request a pull.
 ## Usage
 Here is listed some of the most common actions when managin the user auth flow on your site. Examples of:
 # Logging a user in
-```if($this->login()){
-	echo "Logged in!";
-} else {
-	echo "Wrong credentials!";
-}```
+	if($this->login()){
+		echo "Logged in!";
+	} else {
+		echo "Wrong credentials!";
+	}
 
 # Validating a session
-```if($this->user->validate_session()) {
-	echo "Session is still valid.";
-}```
+	if($this->user->validate_session()) {
+		echo "Session is still valid.";
+	}
 
 # Redirect user based on valid session
-```$this->user->on_invalid_session('home/login');```
+	$this->user->on_invalid_session('home/login');
 
 # Get the current logged in user id
-```echo $this->user->get_id();```
+	echo $this->user->get_id();
 
 # Get current user name
-```Welcome <?php echo $this->user->get_name();?>!```
+	Welcome <?php echo $this->user->get_name();?>!
 
 # Check permission
-```if($this->user->has_permission('editor')){
-	$this->load->view('editor_menu');
-}```
+	if($this->user->has_permission('editor')){
+		$this->load->view('editor_menu');
+	}
+
+# Logout user
+	$this->user->destroy_user();
 
 
 ## Managing users
-There is a separated library to do this. After setting up the database and the session, load up the user_manager library. Some examples of
+There is a separated library for user managing. After setting up the database config, load up the user_manager library. Some examples of
 # Creating a permission
-```$permission_id = $this->user_manager->save_permission('editor', 'The editors of my website.');```
+	$permission_id = $this->user_manager->save_permission('editor', 'The editors of my website.');
 
 # Adding a new user
-```
+
 $fullname = "Michael Jackson";
-$login = "MJ"
-$password = "beat_it";
-$active = true;
-$permissions = array(1, 3, 6);
-$this->user_manager->save_user($fullname, $login, $password, $active, $permissions);
-```
+	$login = "MJ"
+	$password = "beat_it";
+	$active = true;
+	$permissions = array(1, 3, 6);
+	$this->user_manager->save_user($fullname, $login, $password, $active, $permissions);
+
 
 # Deleting a user
-```$this->user_manager->delete_user($user_id);```
+	$this->user_manager->delete_user($user_id);
 
 ## Documentation
 I still working on a good, standalone documentation for the project, it will be released soon. Thanks.
