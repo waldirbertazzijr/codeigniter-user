@@ -1,4 +1,4 @@
-# Codeigniter User Library V. 0.6 
+# Codeigniter User Library V. 0.8
 This library is a **very simple** user auth library for Codeigniter. If you're looking into more complex and secure, this is not for you.
 The library works by simple passwords md5 hashing with some functions that can help you out.
 I'll adding things to it as I need em. Fell free to request a pull.
