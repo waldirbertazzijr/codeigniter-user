@@ -11,42 +11,42 @@ I'll adding things to it as I need em. Fell free to request a pull.
 
 ## Usage
 Here is listed some of the most common actions when managin the user auth flow on your site. Examples of:
-# Logging a user in
+### Logging a user in
 	if($this->user->login($login, $password)){
 		echo "Logged in!";
 	} else {
 		echo "Wrong credentials!";
 	}
 
-# Validating a session
+### Validating a session
 	if($this->user->validate_session()) {
 		echo "Session is still valid.";
 	}
 
-# Redirect user based on valid session
+### Redirect user based on valid session
 	$this->user->on_invalid_session('home/login');
 
-# Get the current logged in user id
+### Get the current logged in user id
 	echo $this->user->get_id();
 
-# Get current user name
+### Get current user name
 	Welcome <?php echo $this->user->get_name();?>!
 
-# Check permission
+### Check permission
 	if($this->user->has_permission('editor')){
 		$this->load->view('editor_menu');
 	}
 
-# Logout user
+### Logout user
 	$this->user->destroy_user();
 
 
 ## Managing users
 There is a separated library for user managing. After setting up the database config, load up the user_manager library. Some examples of
-# Creating a permission
+### Creating a permission
 	$permission_id = $this->user_manager->save_permission('editor', 'The editors of my website.');
 
-# Adding a new user
+### Adding a new user
 
 $fullname = "Michael Jackson";
 	$login = "MJ"
@@ -56,7 +56,7 @@ $fullname = "Michael Jackson";
 	$this->user_manager->save_user($fullname, $login, $password, $active, $permissions);
 
 
-# Deleting a user
+### Deleting a user
 	$this->user_manager->delete_user($user_id);
 
 ## Documentation
