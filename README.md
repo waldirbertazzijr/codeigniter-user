@@ -12,7 +12,7 @@ I'll adding things to it as I need em. Fell free to request a pull.
 ## Usage
 Here is listed some of the most common actions when managin the user auth flow on your site. Examples of:
 # Logging a user in
-	if($this->user->login()){
+	if($this->user->login($login, $password)){
 		echo "Logged in!";
 	} else {
 		echo "Wrong credentials!";
