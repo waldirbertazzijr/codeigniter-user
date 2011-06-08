@@ -7,16 +7,8 @@
  * @subpackage	Libraries
  * @category	Users
  * @author		Waldir Bertazzi Junior
- * @link		http://waldir.org/orion/
+ * @link		http://waldir.org/
  */
-
-/* 
- * This constant is used to make the login method
- * dont update the last login on database
- * This is only for optmization pruposes.
- *
- */
-
 
 class CI_User_manager {
 	

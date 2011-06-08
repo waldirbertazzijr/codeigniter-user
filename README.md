@@ -5,15 +5,59 @@ I'll adding things to it as I need em. Fell free to request a pull.
 
 ## Quick Start
 * Import the _userschema.sql_ to your database.
-* Merge the content of this rep with you Codeigniter root.
-* You may need to set your secret session key on your config file.
-* Head to http://example.com/index.php/login/ and try it.
+* Merge the content of the folders with you Codeigniter root.
+* You may need to set your secret session key on your config file and also set up your database config properly if you haven't yet.
+* Head to /index.php/login/ and try your new auth system.
 
-## Adding a user
-For now, you have to query the database and insert a new user on users table. The links between users and permissions are done on the link table manually for now.
+## Usage
+Here is listed some of the most common actions when managin the user auth flow on your site. Examples of:
+# Logging a user in
+```if($this->login()){
+	echo "Logged in!";
+} else {
+	echo "Wrong credentials!";
+}```
+
+# Validating a session
+```if($this->user->validate_session()) {
+	echo "Session is still valid.";
+}```
+
+# Redirect user based on valid session
+```$this->user->on_invalid_session('home/login');```
+
+# Get the current logged in user id
+```echo $this->user->get_id();```
+
+# Get current user name
+```Welcome <?php echo $this->user->get_name();?>!```
+
+# Check permission
+```if($this->user->has_permission('editor')){
+	$this->load->view('editor_menu');
+}```
+
+
+## Managing users
+There is a separated library to do this. After setting up the database and the session, load up the user_manager library. Some examples of
+# Creating a permission
+```$permission_id = $this->user_manager->save_permission('editor', 'The editors of my website.');```
+
+# Adding a new user
+```
+$fullname = "Michael Jackson";
+$login = "MJ"
+$password = "beat_it";
+$active = true;
+$permissions = array(1, 3, 6);
+$this->user_manager->save_user($fullname, $login, $password, $active, $permissions);
+```
+
+# Deleting a user
+```$this->user_manager->delete_user($user_id);```
 
 ## Documentation
-I still working on a good documentation for the project, it will be released soon. Thanks.
+I still working on a good, standalone documentation for the project, it will be released soon. Thanks.
 
 ## Codeigniter Sparks
 [Codeigniter Sparks](http://getsparks.org/) is an amazing project. It's something like a "package manager" for Codeigniter. Im on that, when I got some free time I'll read how can I put my package on Sparks.
