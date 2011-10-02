@@ -1,8 +1,23 @@
+-- phpMyAdmin SQL Dump
+-- version 3.3.10
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost
+-- Generation Time: Oct 02, 2011 at 06:52 PM
+-- Server version: 5.5.15
+-- PHP Version: 5.3.4
+
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
 --
--- Database: `Users`
+-- Database: `codeigniter_user`
 --
 
 -- --------------------------------------------------------
@@ -17,15 +32,14 @@ CREATE TABLE IF NOT EXISTS `permissions` (
   `description` text NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `permissions`
 --
 
 INSERT INTO `permissions` (`id`, `name`, `description`) VALUES
-(1, 'su', 'User is a superuser.'),
-(2, 'admin', 'User is admin.');
+(1, 'admin', 'User is admin.');
 
 -- --------------------------------------------------------
 
@@ -37,19 +51,19 @@ CREATE TABLE IF NOT EXISTS `users` (
   `id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `name` varchar(80) NOT NULL,
   `login` varchar(12) NOT NULL,
-  `password` varchar(32) NOT NULL,
+  `password` varchar(40) NOT NULL,
+  `salt` varchar(40) NOT NULL,
   `last_login` date DEFAULT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `login`, `password`, `last_login`, `active`) VALUES
-(1, 'Administrator', 'admin', '21232f297a57a5a743894a0e4a801fc3', '2011-05-29', 1),
-(2, 'Superuser', 'sudo', 'd338b3f0f405eb5e51c8cc1e5ca66f02', NULL, 1);
+INSERT INTO `users` (`id`, `name`, `login`, `password`, `salt`, `last_login`, `active`) VALUES
+(1, 'Administrator', 'admin', '2a7c3ec2e64659de55b4d209f87cebfd1431127b', '73da7bb9d2a475bbc2ab79da7d4e94940cb9f9d5', '2011-10-02', 1);
 
 -- --------------------------------------------------------
 
@@ -69,8 +83,7 @@ CREATE TABLE IF NOT EXISTS `users_permissions` (
 --
 
 INSERT INTO `users_permissions` (`user_id`, `permission_id`) VALUES
-(1, 1),
-(2, 2);
+(1, 1);
 
 --
 -- Constraints for dumped tables
