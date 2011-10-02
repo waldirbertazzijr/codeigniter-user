@@ -33,6 +33,11 @@ class CI_User {
 	 */
 	function __construct(){
 		$this->CI =& get_instance();
+		
+		// checks if the database library is loaded
+		if(!isset($this->CI->db)){
+			show_error("You need the database library to use the User Library. Please check your configuration.");
+		}
         
         // load session library
         $this->CI->load->library('session');
@@ -41,9 +46,9 @@ class CI_User {
 	/**
 	 * 
 	 * On Invalid Session - Simple redirect if the user is not
-	 * already logged in.
+	 * already logged in. Make it easy to create login only pages.
 	 * 
-	 * @param string $destiny - the destiny if the user is not logged in
+	 * @param string $destiny - the destiny to the user is not logged in
 	 * 
 	 */
 	function on_invalid_session($destiny){
@@ -55,9 +60,9 @@ class CI_User {
 	
 	/**
 	 * On Valid Session - Simple redirect the user
-	 * if its already logged in.
+	 * if its already logged in. Make it easy to create login pages.
 	 * 
-	 * @param string $destiny - the destiny if the user is logged in
+	 * @param string $destiny - the destiny to the user is logged in
 	 *
 	 */
 	function on_valid_session($destiny){
@@ -90,25 +95,35 @@ class CI_User {
 	 * @param string $password - The password to validate
 	 */
 	function login($login, $password, $update_last_login = true){
-		$user_query = $this->CI->db->get_where('users', array('login'=>$login, 'password'=>md5($password)));
+		$user_query = $this->CI->db->get_where('users', array('login'=>$login));
 		if($user_query->num_rows()==1){
-            // Loggin the user in...
-
-			// save the user data
-            $this->user_data = $user_query->row();
-
-            //loads the user permissions
-            $this->load_permission($this->user_data->id);
-
-            // create the user session
-			$this->create_session($login, $password);
+			// get user from the database
+			$user_query = $user_query->row();
 			
-			// updates last login if needed
-			if($update_last_login){
-                $this->update_last_login();
-            }
+			// chekcs if user is active or not
+			if($user_query->active == 0) return false;
 
-			return true;
+			// validates the salt
+			if(hash('sha1', $password . $user_query->salt) == $user_query->password){
+				// save the user data
+	            $this->user_data = $user_query;
+
+	            //loads the user permissions
+	            $this->load_permission($this->user_data->id);
+
+	            // create the user session
+				$this->create_session($login, $password);
+
+				// updates last login if needed
+				if($update_last_login){
+	                $this->update_last_login();
+	            }
+
+				return true;
+			} else {
+				// invalid password
+				return false;
+			}
         } else {
             // Invalid credentials
 			return false;
@@ -241,6 +256,8 @@ class CI_User {
 
     /**
 	 * Load Permission - Aux function to load the permissions
+	 * 
+	 * @return array
 	 */
 	function load_permission(){
 		$permissions = $this->CI->db->join('users_permissions', 'users_permissions.permission_id = permissions.id')

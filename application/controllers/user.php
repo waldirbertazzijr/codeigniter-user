@@ -1,5 +1,14 @@
 <?php
-class Login extends CI_Controller {
+
+/**
+ * User Controller
+ * This controller fully demonstrates the user class.
+ *
+ * @package User
+ * @author Waldir Bertazzi Junior
+ * @link http://waldir.org/
+ **/
+class User extends CI_Controller {
 	
 	function __construct(){
 		parent::__construct();
@@ -11,12 +20,19 @@ class Login extends CI_Controller {
 	}
 	
 	function index()
-	{
+	{		
 		// If user is already logged in, send it to main
 		$this->user->on_valid_session('main');
 		
 		// Loads the login view
 		$this->load->view('login');
+	}
+	
+	function private_page(){
+		// if user tried direct access it will be sent to index
+		$this->user->on_invalid_session('user');
+		
+		$this->load->view('home');
 	}
 	
 	function validate()
@@ -32,11 +48,11 @@ class Login extends CI_Controller {
 		*/
 		if($this->user->login($login, $password)){
 			// Success
-			redirect('main');
+			redirect('user/private_page');
 		} else {
 			// Oh, holdon sir.
 			$this->session->set_flashdata('error_message', 'Invalid login or password.');
-			redirect('login');
+			redirect('user');
 		}
 	}
 	
@@ -48,7 +64,7 @@ class Login extends CI_Controller {
 		
 		// Bye, thanks! :)
 		$this->session->set_flashdata('success_message', 'You are now logged out.');
-		redirect('login');
+		redirect('user');
 	}
 }
 ?>

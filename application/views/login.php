@@ -92,12 +92,14 @@
 	<h1>Codeigniter User Libray</h1>
 	<div id="body">
         <p>If you can see this page you have successfully installed the Codeigniter-user library. <br />Here is a simple test form and logged page for you to play around.</p>
+		<p>You can try access the private page here: <a href="<?php echo site_url('user/private_page'); ?>">Private Page</a> to see the error below on the form.</p>
         <div class="info">
             <p>Login: <strong>admin</strong></p>
             <p>Password: <strong>admin</strong></p>
         </div>
-        <form action="<?php echo site_url('login/validate') ?>" method="post" id="login_form">
-
+        <form action="<?php echo site_url('user/validate') ?>" method="post" id="login_form">
+			<h2>Login Form</h2>
+			
             <?php echo $this->session->flashdata('error_message');?>
             <?php echo $this->session->flashdata('success_message');?>
 

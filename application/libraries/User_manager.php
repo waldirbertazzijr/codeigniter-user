@@ -17,17 +17,36 @@ class CI_User_manager {
 	function __construct(){
 		$this->CI =& get_instance();
         
+		// checks if the database library is loaded
+		if(!isset($this->CI->db)){
+			show_error("You need the database library to use the User Library. Please check your configuration.");
+		}
+
         // load session library
         $this->CI->load->library('session');
     }
 
-    // Saves a new user
-    function save_user($full_name, $login, $password, $active = 1, $permissions=array()) {
-        $hashed_password = md5($password);
-        
-        if( ! $this->login_exists($login) && $full_name!= "") {
+    /**
+     * Creates a new user and return its ID
+     *
+     * @return int ID
+	 * @param String full user name
+	 * @param String full user password
+	 * @param Bool is user active?
+	 * @param Array array of int permissions
+     * @author Waldir Bertazzi Junior
+     **/
+    function save_user($full_name, $login, $password, $active = 1, $permissions=array()) {        
+		
+		// first we must check if is a valid insert
+		if( ! $this->login_exists($login) && $full_name!= "") {
+	
+			// generate salt and compiles user password
+			$user_salt = $this->generate_salt();
+	        $hashed_password = hash('sha1', $password . $user_salt);
+	
             // This login is fine, proceed
-            if ( $this->CI->db->insert('users', array('name'=>$full_name, 'login'=>$login, 'password'=>$hashed_password, 'active'=>$active )) ) {
+            if ( $this->CI->db->insert('users', array('name'=>$full_name, 'login'=>$login, 'password'=>$hashed_password, 'active'=>$active, 'salt'=>$user_salt )) ) {
                 
                 // Saved successfully
                 $new_user_id = $this->CI->db->insert_id();
@@ -39,10 +58,21 @@ class CI_User_manager {
                 return $new_user_id;
             }
         } else {
-            // Login already exists
+            // Login already exists or full name is empty
             return false;
         }
     }
+
+	/**
+	 * Generate a random salt
+	 *
+	 * @return void
+	 * @author Waldir Bertazzi Junior
+	 **/
+	function generate_salt()
+	{
+		return hash('sha1', rand(1,1000000));
+	}
     
     // Delete the user
     function delete_user($user_id){
