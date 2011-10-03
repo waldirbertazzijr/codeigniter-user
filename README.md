@@ -1,10 +1,11 @@
 # Codeigniter User Library V. 1.0
-This library is a **very simple** user auth library for Codeigniter. The libraries uses sha1 hashing with salt.
+This library is a *very simple* user auth library for Codeigniter. The libraries uses sha1 hashing with salt.
 I'll adding things to it as I need em. Fell free to request a pull.
 
 ## Quick Start
 This is a quick guide to help you run your user system.
-* Import the _database\_schema.sql_ to your database. There are 3 tables with users and permissions.
+
+* Import the _database schema.sql_ to your database. There are 3 tables with users and permissions.
 * Merge the content of the folders with you Codeigniter root.
 * Change your encryption key on your application _config.php_ file and also set up your database config properly if you haven't yet.
 * Load your database library automatically. This can be done on _autoload.php_, under _libraries_ session.
