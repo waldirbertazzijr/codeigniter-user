@@ -6,10 +6,10 @@ I'll adding things to it as I need em. Fell free to request a pull.
 This is a quick guide to help you run your user system.
 
 * Import the _database schema.sql_ to your database. There are 3 tables with users and permissions.
-* Merge the content of the folders with you Codeigniter root.
+* Add the libraries to your libraries folder on your codeigniter application root. If you want to see the demo, merge all the files.
 * Change your encryption key on your application _config.php_ file and also set up your database config properly if you haven't yet.
 * Load your database library automatically. This can be done on _autoload.php_, under _libraries_ session.
-* Head to http://example.com/index.php/user and try your new auth system. There is a simple demonstration within this library.
+* Head to http://example.com/index.php/user and try out your new user auth system. There is a simple demonstration within this library of a regular login.
 
 ## Usage
 Here is listed some of the most common actions when managin the user auth flow on your site. Examples of:
