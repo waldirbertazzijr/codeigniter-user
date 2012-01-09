@@ -29,9 +29,10 @@ class User extends CI_Controller {
 	}
 	
 	function private_page(){
-		// if user tried direct access it will be sent to index
+		// if user tries to direct access it will be sent to index
 		$this->user->on_invalid_session('user');
 		
+		// ... else he will view home
 		$this->load->view('home');
 	}
 	

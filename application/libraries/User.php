@@ -242,7 +242,7 @@ class CI_User {
 	
 	
 	/**
-	 * Destroy User - Destroy the user where its needed.
+	 * Destroy User - Destroy all the user session where is needed.
 	 * 
 	 * @return boolean
 	 */
@@ -255,7 +255,7 @@ class CI_User {
 
 
     /**
-	 * Load Permission - Aux function to load the permissions
+	 * Load Permission - Aux function to load the user permissions
 	 * 
 	 * @return array
 	 */
