@@ -7,7 +7,7 @@
  * @subpackage	Libraries
  * @category	Users
  * @author		Waldir Bertazzi Junior
- * @link		http://waldir.org/orion/
+ * @link		http://waldir.org/
  */
 
 /* 
@@ -93,6 +93,7 @@ class CI_User {
 	 * 
 	 * @param string $login - The login to validate 
 	 * @param string $password - The password to validate
+	 * @param bool #update_last_login - set if this login will update the last login field or not
 	 */
 	function login($login, $password, $update_last_login = true){
 		$user_query = $this->CI->db->get_where('users', array('login'=>$login));
@@ -177,11 +178,7 @@ class CI_User {
 	 * @return boolean
 	 */
     function match_password($password_string){
-        if($this->session->userdata('logged') == 'true') {
-    		return md5($entered_password) == $this->user_data->password;
-        } else {
-            return false;
-        }
+   		return hash('sha1', $entered_password . $this->user_data->salt) == $this->user_data->password;
 	}
 	
 	/**
@@ -207,6 +204,19 @@ class CI_User {
 		$this->user_data->password = $new_pw;
 		return true;
 	}
+	
+	/**
+     * Get Hashed String - Returns a string salted and hashed by this user
+	 * database salt. Use it to hash passwords before saving to the database.
+     *
+	 * @param string $string the string to be salted and hashed
+	 * @return boolean
+	 */
+	function get_hashed($string){
+		return hash('sha1', $string . $this->user_data->salt);
+	}
+	
+	
 	
 	/**
 	 * Has Permission - returns true if the user has the received
