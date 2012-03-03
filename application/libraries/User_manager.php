@@ -36,7 +36,7 @@ class CI_User_manager {
 	 * @param Array array of int permissions
      * @author Waldir Bertazzi Junior
      **/
-    function save_user($full_name, $login, $password, $active = 1, $permissions=array()) {        
+    function save_user($full_name, $login, $password, $email, $active = 1, $permissions=array()) {        
 		
 		// first we must check if is a valid insert
 		if( ! $this->login_exists($login) && $full_name!= "") {
@@ -46,7 +46,7 @@ class CI_User_manager {
 	        $hashed_password = hash('sha1', $password . $user_salt);
 	
             // This login is fine, proceed
-            if ( $this->CI->db->insert('users', array('name'=>$full_name, 'login'=>$login, 'password'=>$hashed_password, 'active'=>$active, 'salt'=>$user_salt )) ) {
+            if ( $this->CI->db->insert('users', array('name'=>$full_name, 'login'=>$login, 'email'=>$email, 'password'=>$hashed_password, 'active'=>$active, 'salt'=>$user_salt )) ) {
                 
                 // Saved successfully
                 $new_user_id = $this->CI->db->insert_id();
@@ -137,4 +137,5 @@ class CI_User_manager {
             return $this->CI->db->get_where('users_permissions', array('permission_id'=>$permission->id))->result();
         }
     }
+
 }

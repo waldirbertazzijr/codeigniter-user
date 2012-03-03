@@ -3,11 +3,11 @@ This library is a *very simple* but powerful user auth library for CodeIgniter. 
 ## Quick Start
 This is a quick guide to help you run your user system.
 
-* Import the _database schema.sql_ to your database. There are 3 tables with users and permissions and the relation table.
+* Import the _database schema.sql_ to your database.
 * Copy the libraries to your application/libraries folder. If you want to see the demo login page, marge all the files (including the views and controllers).
 * Change your encryption key on your application _config.php_ file and also set up your database connection config properly if you haven't yet.
-* Load your database library automatically. This can be done on _autoload.php_, under _libraries_ session. Just type "database" in the array.
-* *If you installed the demo*, head to http://example.com/index.php/user and try out your new user auth system.
+* Set up your database. This can be done on _database.php_, under config folder.
+* *If you installed the demo*, head to _index.php/user_ and try out your new user auth system.
 
 ## Usage
 Here is listed some of the most common actions when managin the user auth flow on your site. Examples of:
@@ -82,14 +82,11 @@ This function must be called after you changed the user's password in the databa
 		echo "User was deleted.";
 	}
 
-## Codeigniter Sparks
-[Codeigniter Sparks](http://getsparks.org/) is an amazing project. I'm on that, when I got some free time I'll read how can I put my package on Sparks!
-
 ---
 # Changelog
-> Version 1.1
->> Fixed some broken functions.
->> Updated doc with brief description of methods.
-> Version 1.0
->> Added sha1 support.
->> Added password salting support.
+* Version 1.1
+** Fixed some broken functions.
+** Updated doc with brief description of methods.
+* Version 1.0
+** Added sha1 support.
+** Added password salting support.

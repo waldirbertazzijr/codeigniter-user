@@ -21,8 +21,13 @@ define('DONT_UPDATE_LOGIN', false);
 
 class CI_User {
 	
-	public $user_data 				= array();
-	protected $CI;
+	/**
+	 * User Data - This variable holds all user data after session validation
+	 *
+	 * @var array
+	 */
+	public $user_data = array();
+	private $CI;
 
 	/**
 	 * Constructor
@@ -36,12 +41,49 @@ class CI_User {
 		
 		// checks if the database library is loaded
 		if(!isset($this->CI->db)){
-			show_error("You need the database library to use the User Library. Please check your configuration.");
+			show_error("You need the database library to use the user library. Please check your configuration.");
 		}
         
         // load session library
         $this->CI->load->library('session');
 	}
+	
+	/**
+	 * Get ID - return the logged user id.
+	 * 
+	 * @return int
+	 */
+	function get_id(){
+		return $this->user_data->id;
+	}
+	
+	/**
+	 * Get Email - return the logged user email.
+	 * 
+	 * @return string
+	 */
+	function get_id(){
+		return $this->user_data->email;
+	}
+	
+	/**
+	 * Get username - return the logged user username.
+	 * 
+	 * @return string
+	 */
+	function get_login(){
+		return $this->CI->session->userdata('login');
+	}
+	
+	/**
+	 * Get name - return the logged user name.
+	 * 
+	 * @return string
+	 */
+	function get_name(){
+		return $this->user_data->name;
+	}
+	
 	
 	/**
 	 * 
@@ -110,10 +152,10 @@ class CI_User {
 	            $this->user_data = $user_query;
 
 	            //loads the user permissions
-	            $this->load_permission($this->user_data->id);
+	            $this->_load_permission($this->user_data->id);
 
 	            // create the user session
-				$this->create_session($login, $password);
+				$this->_create_session($login, $password);
 
 				// updates last login if needed
 				if($update_last_login){
@@ -139,35 +181,8 @@ class CI_User {
 	 * @param string $password - The password to save
 	 *
 	 */
-	function create_session($login, $password){
+	private function _create_session($login, $password){
 		$this->CI->session->set_userdata(array('login'=>$login, 'pw'=>$password, 'logged'=>true));
-	}
-	
-	/**
-	 * Get ID - return the logged user id.
-	 * 
-	 * @return int
-	 */
-	function get_id(){
-		return $this->user_data->id;
-	}
-	
-	/**
-	 * Get username - return the logged user username.
-	 * 
-	 * @return int
-	 */
-	function get_login(){
-		return $this->CI->session->userdata('login');
-	}
-	
-	/**
-	 * Get name - return the logged user name.
-	 * 
-	 * @return string
-	 */
-	function get_name(){
-		return $this->user_data->name;
 	}
 	
 	/**
@@ -178,7 +193,7 @@ class CI_User {
 	 * @return boolean
 	 */
     function match_password($password_string){
-   		return hash('sha1', $entered_password . $this->user_data->salt) == $this->user_data->password;
+   		return $this->get_hashed($password_string) == $this->user_data->password;
 	}
 	
 	/**
@@ -192,20 +207,6 @@ class CI_User {
 	}
 	
 	/**
-     * Update Password - In the case you made a form for the user to change its
-     * password, this function will change everything needed to maintain
-     * the user logged in after updating the database
-     *
-	 * @param string $new_pw the new password
-	 * @return boolean
-	 */
-	function update_pw($new_pw){
-		$this->CI->session->set_userdata(array('pw'=>$new_pw));
-		$this->user_data->password = $new_pw;
-		return true;
-	}
-	
-	/**
      * Get Hashed String - Returns a string salted and hashed by this user
 	 * database salt. Use it to hash passwords before saving to the database.
      *
@@ -215,8 +216,6 @@ class CI_User {
 	function get_hashed($string){
 		return hash('sha1', $string . $this->user_data->salt);
 	}
-	
-	
 	
 	/**
 	 * Has Permission - returns true if the user has the received
@@ -235,8 +234,6 @@ class CI_User {
         }
 	}
 	
-	
-	
 	/**
 	 * Update Login - update the login where it is needed.
 	 * note: it wont update the database.
@@ -247,6 +244,20 @@ class CI_User {
 	function update_login($new_login){
 		$this->CI->session->set_userdata(array('login'=>$new_login));
 		$this->user_data->login = $new_login;
+		return true;
+	}
+	
+	/**
+     * Update Password - In the case you made a form for the user to change its
+     * password, this function will change everything needed to maintain
+     * the user logged in after updating the database
+     *
+	 * @param string $new_pw the new password
+	 * @return boolean
+	 */
+	function update_pw($new_pw){
+		$this->CI->session->set_userdata(array('pw'=>$new_pw));
+		$this->user_data->password = $new_pw;
 		return true;
 	}
 	
@@ -269,7 +280,7 @@ class CI_User {
 	 * 
 	 * @return array
 	 */
-	function load_permission(){
+	private function _load_permission(){
 		$permissions = $this->CI->db->join('users_permissions', 'users_permissions.permission_id = permissions.id')
 									->get_where('permissions', array('users_permissions.user_id'=>$this->get_id()))
 									->result();

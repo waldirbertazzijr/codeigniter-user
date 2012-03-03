@@ -1,24 +1,4 @@
--- phpMyAdmin SQL Dump
--- version 3.3.10
--- http://www.phpmyadmin.net
---
--- Host: localhost
--- Generation Time: Oct 02, 2011 at 06:52 PM
--- Server version: 5.5.15
--- PHP Version: 5.3.4
-
 SET FOREIGN_KEY_CHECKS=0;
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
---
--- Database: `codeigniter_user`
---
 
 -- --------------------------------------------------------
 
@@ -32,7 +12,7 @@ CREATE TABLE IF NOT EXISTS `permissions` (
   `description` text NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `permissions`
@@ -50,20 +30,21 @@ INSERT INTO `permissions` (`id`, `name`, `description`) VALUES
 CREATE TABLE IF NOT EXISTS `users` (
   `id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `name` varchar(80) NOT NULL,
-  `login` varchar(12) NOT NULL,
+  `email` varchar(30) NULL,
+  `login` varchar(18) NOT NULL,
   `password` varchar(40) NOT NULL,
   `salt` varchar(40) NOT NULL,
   `last_login` date DEFAULT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `login`, `password`, `salt`, `last_login`, `active`) VALUES
-(1, 'Administrator', 'admin', '2a7c3ec2e64659de55b4d209f87cebfd1431127b', '73da7bb9d2a475bbc2ab79da7d4e94940cb9f9d5', '2011-10-02', 1);
+INSERT INTO `users` (`id`, `name`, `login`, `email`, `password`, `salt`, `last_login`, `active`) VALUES
+(1, 'Administrator', 'admin', 'admin@localhost', '2a7c3ec2e64659de55b4d209f87cebfd1431127b', '73da7bb9d2a475bbc2ab79da7d4e94940cb9f9d5', '2011-10-02', 1);
 
 -- --------------------------------------------------------
 
@@ -76,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `users_permissions` (
   `permission_id` mediumint(8) NOT NULL,
   KEY `user_id` (`user_id`),
   KEY `permission_id` (`permission_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `users_permissions`
