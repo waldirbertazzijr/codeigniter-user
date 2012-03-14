@@ -19,7 +19,7 @@
 define('DONT_UPDATE_LOGIN', false);
 
 
-class CI_User {
+class User {
 	
 	/**
 	 * User Data - This variable holds all user data after session validation

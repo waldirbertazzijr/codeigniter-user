@@ -10,7 +10,7 @@
  * @link		http://waldir.org/
  */
 
-class CI_User_manager {
+class User_manager {
 	
 	protected $CI;
 
