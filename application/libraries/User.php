@@ -62,7 +62,7 @@ class User {
 	 * 
 	 * @return string
 	 */
-	function get_id(){
+	function get_email(){
 		return $this->user_data->email;
 	}
 	

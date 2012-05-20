@@ -138,4 +138,24 @@ class User_manager {
         }
     }
 
+	// Add (and saves to database) a custom user information
+	function set_custom_field($user_id, $name, $value){
+		$field = $this->CI->db->get_where('users_meta', array('user_id'=>$user_id, 'name'=>$name));
+		if($field->num_rows() == 0){
+			return $this->db->insert('users_meta', array('user_id'=>$user_id, 'name'=>$name, 'value'=>$value));
+		} else {
+			return $this->db->update('users_meta', array('user_id'=>$user_id, 'name'=>$name, 'value'=>$value), array('user_id'=>$user_id));
+		}
+	}
+	
+	// Add (and saves to database) a custom user information
+	function get_custom_field($user_id, $name, $value){
+		$field = $this->CI->db->get_where('users_meta', array('user_id'=>$user_id, 'name'=>$name));
+		if($field->num_rows() == 0){
+			return FALSE;
+		} else {
+			return $field->row()->value;
+		}
+	}
+
 }
