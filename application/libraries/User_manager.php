@@ -95,7 +95,7 @@ class User_manager {
     function add_permission($user_id, $permissions) {
         // If array received we must call this recursively
         if(is_array($permissions)) {
-            if(sizeof($permissions) != 0) {
+            if(sizeof($permissions) == 0) {
                 return FALSE;
             }
             // Foreach permission in the array call this function recursively
