@@ -85,8 +85,8 @@ This function must be called after you changed the user's password in the databa
 ---
 # Changelog
 * Version 1.1
-** Fixed some broken functions.
-** Updated doc with brief description of methods.
+	* Fixed some broken functions.
+	* Updated doc with brief description of methods.
 * Version 1.0
-** Added sha1 support.
-** Added password salting support.
+	* Added sha1 support.
+	* Added password salting support.
