@@ -68,7 +68,9 @@
         background: #eee;
         padding: 10px;
         width: 300px;
-    }    
+		box-shadow: 0 1px 4px rgba(0,0,0,0.5);
+		text-shadow: 0 1px 0 #fff;
+    }
 
     #login_form label {
         float: left;
@@ -84,6 +86,18 @@
     .info p {
         margin: 0;
     }
+	.success_message {
+		background: rgba(40,10,255, 0.4);
+		color: #fff !important;
+		text-shadow: none;
+		padding: 0 5px;
+	}
+	.error_message {
+		background: rgba(255,10,40, 0.4);
+		color: #fff !important;
+		text-shadow: none;
+		padding: 0 5px;
+	}
 	</style>
 </head>
 <body>
@@ -91,26 +105,26 @@
 <div id="container">
 	<h1>Codeigniter User Libray</h1>
 	<div id="body">
-        <p>If you can see this page you have successfully installed the Codeigniter-user library. <br />Here is a simple test form and logged page for you to play around.</p>
-		<p>You can try access the private page here: <a href="<?php echo site_url('user/private_page'); ?>">Private Page</a> to see the error below on the form.</p>
+        <p>If you can see this page you have successfully installed the <strong>codeigniter-user</strong> library. <br />Here is a simple test form and logged page for you to play around.</p>
+		<p>If you try to access the <a href="<?php echo site_url('login/private_page'); ?>">private page</a> without login you can see the error below.</p>
         <div class="info">
             <p>Login: <strong>admin</strong></p>
             <p>Password: <strong>admin</strong></p>
         </div>
-        <form action="<?php echo site_url('user/validate') ?>" method="post" id="login_form">
-			<h2>Login Form</h2>
+        <form action="<?php echo site_url('login/validate') ?>" method="post" id="login_form">
+			<h2>Demo Login Form</h2>
 			
-            <?php echo $this->session->flashdata('error_message');?>
-            <?php echo $this->session->flashdata('success_message');?>
+            <div class="error_message"><?php echo $this->session->flashdata('error_message');?></div>
+            <div class="success_message"><?php echo $this->session->flashdata('success_message');?></div>
 
             <p>
             <label for="login">User: </label>
-            <input type="text" name="login" id="login" />
+            <input type="text" name="login" id="login" placeholder="Login" />
             </p>
 
             <p>
             <label for="password">Password:</label>
-            <input type="password" name="password" id="password" />
+            <input type="password" name="password" id="password" placeholder="Password" />
             </p>
 
             <p><button value="send">Login</button></p>

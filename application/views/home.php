@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Welcome to CodeIgniter</title>
+	<title>Welcome to your private page!</title>
 
 	<style type="text/css">
 
@@ -67,13 +67,13 @@
 <body>
 
 <div id="container">
-    <h1>Welcome to the private page!</h1>
+    <h1>Welcome to the private page, <?php echo $this->user->get_name(); ?>!</h1>
 	<div id="body">
 
-		<p>You are now logged in as <strong><?php echo $this->user->get_name(); ?></strong>. Click <a href="<?php echo site_url('user/logout')?>">here</a> to logout. </p>
+		<p>You are now logged in as <strong><?php echo $this->user->get_name(); ?></strong> (ID #<?php echo $this->user->get_id(); ?>). Click <a href="<?php echo site_url('login/logout')?>">here</a> to logout. </p>
         
         <hr />
-        <p>A dump of your session:</p>
+        <p>A dump of your session info:</p>
         <pre><?php echo var_dump($this->user->user_data); ?>
         </pre>
         <hr />
