@@ -90,3 +90,8 @@ This function must be called after you changed the user's password in the databa
 * Version 1.0
 	* Added sha1 support.
 	* Added password salting support.
+
+---
+# Roadmap
+* Version 2.0
+	* Custom fields.
