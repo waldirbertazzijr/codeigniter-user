@@ -1,4 +1,4 @@
-# Codeigniter User Library V. 1.2
+# Codeigniter User Library V. 1.3
 This library is a *very simple* yet *powerful* user auth library for CodeIgniter, made for easy instalation and strong security. The library uses [Bcrypt](http://codahale.com/how-to-safely-store-a-password/) for hashing passwords to the database.
 ## Quick Start
 This is a quick guide to help you run your user system.
