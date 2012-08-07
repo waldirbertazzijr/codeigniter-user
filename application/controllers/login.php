@@ -8,7 +8,7 @@
  * @author Waldir Bertazzi Junior
  * @link http://waldir.org/
  **/
-class User extends CI_Controller {
+class Login extends CI_Controller {
 	
 	function __construct(){
 		parent::__construct();
@@ -22,7 +22,7 @@ class User extends CI_Controller {
 	function index()
 	{		
 		// If user is already logged in, send it to main
-		$this->user->on_valid_session('main');
+		$this->user->on_valid_session('login/private_page');
 		
 		// Loads the login view
 		$this->load->view('login');
@@ -30,7 +30,7 @@ class User extends CI_Controller {
 	
 	function private_page(){
 		// if user tries to direct access it will be sent to index
-		$this->user->on_invalid_session('user');
+		$this->user->on_invalid_session('login');
 		
 		// ... else he will view home
 		$this->load->view('home');
@@ -49,11 +49,11 @@ class User extends CI_Controller {
 		*/
 		if($this->user->login($login, $password)){
 			// Success
-			redirect('user/private_page');
+			redirect('login/private_page');
 		} else {
 			// Oh, holdon sir.
 			$this->session->set_flashdata('error_message', 'Invalid login or password.');
-			redirect('user');
+			redirect('login');
 		}
 	}
 	
@@ -65,7 +65,7 @@ class User extends CI_Controller {
 		
 		// Bye, thanks! :)
 		$this->session->set_flashdata('success_message', 'You are now logged out.');
-		redirect('user');
+		redirect('login');
 	}
 }
 ?>

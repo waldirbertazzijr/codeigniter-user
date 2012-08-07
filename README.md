@@ -1,13 +1,14 @@
-# Codeigniter User Library V. 1.1
-This library is a *very simple* but powerful user auth library for CodeIgniter. The library uses SHA1 hashing with salt to store passwords automatically.
+# Codeigniter User Library V. 1.2
+This library is a *very simple* yet *powerful* user auth library for CodeIgniter, made for easy instalation and strong security. The library uses [Bcrypt](http://codahale.com/how-to-safely-store-a-password/) for hashing passwords to the database.
 ## Quick Start
 This is a quick guide to help you run your user system.
 
 * Import the _database schema.sql_ to your database.
-* Copy the libraries to your application/libraries folder. If you want to see the demo login page, marge all the files (including the views and controllers).
+* Copy the libraries to your _application/libraries_ folder.
+* If you want to see the demo login page, marge all the files (including the views and controllers).
 * Change your encryption key on your application _config.php_ file and also set up your database connection config properly if you haven't yet.
 * Set up your database. This can be done on _database.php_, under config folder.
-* *If you installed the demo*, head to _index.php/user_ and try out your new user auth system.
+* *If you installed the demo*, head to _index.php/login_ and try out your new user auth system.
 
 ## Usage
 Here is listed some of the most common actions when managin the user auth flow on your site. Examples of:
@@ -84,6 +85,10 @@ This function must be called after you changed the user's password in the databa
 
 ---
 # Changelog
+* Version 1.3
+	* Upgraded hash function to Bcrypt. Passwords are much safer and stronger now.
+	* Strong optimization on cookie password storage and hash comparison
+	* No more rehashing after database query.
 * Version 1.1
 	* Fixed some broken functions.
 	* Updated doc with brief description of methods.
@@ -91,7 +96,6 @@ This function must be called after you changed the user's password in the databa
 	* Added sha1 support.
 	* Added password salting support.
 
----
 # Roadmap
 * Version 2.0
-	* Custom fields.
+	* Custom fields attached to each user.

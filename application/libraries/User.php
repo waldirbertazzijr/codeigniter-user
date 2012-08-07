@@ -17,6 +17,8 @@
  *
  */
 define('DONT_UPDATE_LOGIN', false);
+define('PASSWORD_IS_HASHED', true);
+define('PASSWORD_IS_NOT_HASHED', false);
 
 
 class User {
@@ -44,8 +46,8 @@ class User {
 			show_error("You need the database library to use the user library. Please check your configuration.");
 		}
         
-        // load session library
-        $this->CI->load->library('session');
+        // load session and bcrypt library.
+        $this->CI->load->library(array('session', 'bcrypt'));
 	}
 	
 	/**
@@ -123,7 +125,7 @@ class User {
 	 */
 	function validate_session(){
         // This function doesnt need to update the last_login on database.
-		if($this->login($this->CI->session->userdata('login'), $this->CI->session->userdata('pw'), DONT_UPDATE_LOGIN)){
+		if($this->login($this->CI->session->userdata('login'), $this->CI->session->userdata('pw'), DONT_UPDATE_LOGIN, PASSWORD_IS_HASHED)){
 			return true;
 		}
 		return false;
@@ -137,7 +139,7 @@ class User {
 	 * @param string $password - The password to validate
 	 * @param bool #update_last_login - set if this login will update the last login field or not
 	 */
-	function login($login, $password, $update_last_login = true){
+	function login($login, $password, $update_last_login = true, $hashed_password = false){
 		$user_query = $this->CI->db->get_where('users', array('login'=>$login));
 		if($user_query->num_rows()==1){
 			// get user from the database
@@ -146,8 +148,18 @@ class User {
 			// chekcs if user is active or not
 			if($user_query->active == 0) return false;
 
-			// validates the salt
-			if(hash('sha1', $password . $user_query->salt) == $user_query->password){
+			// validates hash
+			$valid_password = false;
+			
+			// if password is not hashed
+			if($hashed_password == PASSWORD_IS_NOT_HASHED){
+				// validate rehashing the password
+				$valid_password = $valid_password || $this->CI->bcrypt->compare($password, $user_query->password);
+			} else {
+				// password already hashed
+				$valid_password = $valid_password || ($user_query->password == $password);
+			}	
+			if($valid_password){
 				// save the user data
 	            $this->user_data = $user_query;
 
@@ -155,7 +167,7 @@ class User {
 	            $this->_load_permission($this->user_data->id);
 
 	            // create the user session
-				$this->_create_session($login, $password);
+				$this->_create_session($login, $user_query->password);
 
 				// updates last login if needed
 				if($update_last_login){
@@ -207,14 +219,13 @@ class User {
 	}
 	
 	/**
-     * Get Hashed String - Returns a string salted and hashed by this user
-	 * database salt. Use it to hash passwords before saving to the database.
+     * Get Hashed String - Use it to hash passwords before saving to the database.
      *
 	 * @param string $string the string to be salted and hashed
 	 * @return boolean
 	 */
 	function get_hashed($string){
-		return hash('sha1', $string . $this->user_data->salt);
+		return $this->CI->bcrypt->hash($string);
 	}
 	
 	/**

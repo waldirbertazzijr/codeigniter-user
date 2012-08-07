@@ -22,8 +22,8 @@ class User_manager {
 			show_error("You need the database library to use the User Library. Please check your configuration.");
 		}
 
-        // load session library
-        $this->CI->load->library('session');
+        // load session and bcrypt library.
+        $this->CI->load->library(array('session', 'bcrypt'));
     }
 
     /**
@@ -41,12 +41,11 @@ class User_manager {
 		// first we must check if is a valid insert
 		if( ! $this->login_exists($login) && $full_name!= "") {
 	
-			// generate salt and compiles user password
-			$user_salt = $this->generate_salt();
-	        $hashed_password = hash('sha1', $password . $user_salt);
+			// generate the hashed password
+	        $hashed_password = $this->CI->bcrypt->hash($password);
 	
             // This login is fine, proceed
-            if ( $this->CI->db->insert('users', array('name'=>$full_name, 'login'=>$login, 'email'=>$email, 'password'=>$hashed_password, 'active'=>$active, 'salt'=>$user_salt )) ) {
+            if ( $this->CI->db->insert('users', array('name'=>$full_name, 'login'=>$login, 'email'=>$email, 'password'=>$hashed_password, 'active'=>$active )) ) {
                 
                 // Saved successfully
                 $new_user_id = $this->CI->db->insert_id();
