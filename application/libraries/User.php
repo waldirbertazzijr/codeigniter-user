@@ -3,18 +3,14 @@
 /**
  * User Class
  *
- * @package		Orion Project
- * @subpackage	Libraries
- * @category	Users
  * @author		Waldir Bertazzi Junior
  * @link		http://waldir.org/
  */
 
-/* 
+/*
  * This constant is used to make the login method
  * dont update the last login on database
  * This is only for optmization pruposes.
- *
  */
 define('DONT_UPDATE_LOGIN', false);
 define('PASSWORD_IS_HASHED', true);
@@ -34,8 +30,8 @@ class User {
 	/**
 	 * Constructor
 	 * 
-     * Loads the session library witch is essential for
-     * us. Also gets a instance of CI class.
+     * Loads the session and crypt library.
+     * Also gets a instance of CI class.
 	 * 
 	 */
 	function __construct(){
@@ -43,11 +39,13 @@ class User {
 		
 		// checks if the database library is loaded
 		if(!isset($this->CI->db)){
-			show_error("You need the database library to use the user library. Please check your configuration.");
+			show_error("Database library isn't loaded, please load it. It's recommended that you autoload it. Click <a href='http://codeigniter.com/user_guide/general/autoloader.html'>here</a> for more information about Codeigniter's autoloader.");
 		}
-        
         // load session and bcrypt library.
         $this->CI->load->library(array('session', 'bcrypt'));
+
+        // autoload user if it exists
+        $this->validate_session();
 	}
 	
 	/**
@@ -119,7 +117,7 @@ class User {
 	
 	/**
 	 * Validate Session - Return true if the session stills valid
-     * otherwise returns false.
+     * otherwise returns false. It also "generates" the user_data variable.
 	 * 
 	 * @return boolean
 	 */
@@ -137,7 +135,8 @@ class User {
 	 * 
 	 * @param string $login - The login to validate 
 	 * @param string $password - The password to validate
-	 * @param bool #update_last_login - set if this login will update the last login field or not
+     * @param bool $update_last_login - set if this login will update the last login field or not
+     * @param bool $hashed_password - notifies the function that the received password is already hashed.
 	 */
 	function login($login, $password, $update_last_login = true, $hashed_password = false){
 		$user_query = $this->CI->db->get_where('users', array('login'=>$login));
@@ -185,18 +184,7 @@ class User {
 		}
 	}
 	
-	/**
-	 * Create session - creates the session with valid data
-	 * its used by the validate function.
-	 * 
-	 * @param string $login - The login to save
-	 * @param string $password - The password to save
-	 *
-	 */
-	private function _create_session($login, $password){
-		$this->CI->session->set_userdata(array('login'=>$login, 'pw'=>$password, 'logged'=>true));
-	}
-	
+		
 	/**
      * Match Password - returns true if the
      * argument is the same to the logged user
@@ -205,7 +193,7 @@ class User {
 	 * @return boolean
 	 */
     function match_password($password_string){
-   		return $this->get_hashed($password_string) == $this->user_data->password;
+   		return $this->CI->bcrypt->compare($password_string, $this->user_data->password);
 	}
 	
 	/**
@@ -217,17 +205,7 @@ class User {
 		$this->CI->db->where(array('id'=>$this->get_id()));
 		return $this->CI->db->update('users', array('last_login' => date('Y-m-d')));
 	}
-	
-	/**
-     * Get Hashed String - Use it to hash passwords before saving to the database.
-     *
-	 * @param string $string the string to be salted and hashed
-	 * @return boolean
-	 */
-	function get_hashed($string){
-		return $this->CI->bcrypt->hash($string);
-	}
-	
+
 	/**
 	 * Has Permission - returns true if the user has the received
 	 * permission. Simply pass the name of the permission.
@@ -304,5 +282,16 @@ class User {
 		$this->user_permission = $user_permissions;
     }
 
+    /**
+	 * Create session - creates the session with valid data
+	 * its used by the validate function.
+	 * 
+	 * @param string $login - The login to save
+	 * @param string $password - The password to save
+	 *
+	 */
+	private function _create_session($login, $password){
+		$this->CI->session->set_userdata(array('login'=>$login, 'pw'=>$password, 'logged'=>true));
+	}
 }
 ?>
