@@ -1,14 +1,14 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * Bcrypt Class
- *
- * @package		Orion Project
- * @subpackage	Libraries
- * @category	Crypt
- * @author		Waldir Bertazzi Junior
- * @link		http://waldir.org/
- */
+* Bcrypt Class
+*
+* @package		Orion Project
+* @subpackage	Libraries
+* @category	Crypt
+* @author		Waldir Bertazzi Junior
+* @link		http://waldir.org/
+*/
 
 class Bcrypt {
 	private $times;
@@ -19,29 +19,46 @@ class Bcrypt {
 		
 		// Bcrypt not supported
 		if(CRYPT_BLOWFISH != 1) {
-			show_error('Bcrypt is not installed or is not supported in this system. You may try the following:<ul><li>Install bcrypt support (http://php.net/crypt).</li><li>Change the encrypt method on codeigniter-user config file under config/user.php');
+			show_error('Bcrypt is not installed or is not supported in this system. You can read more about bcrypt support <a href="http://php.net/crypt">here</a>.');
 		}
 
 		$this->times = $times;
 	}
 	
+	/**
+	 * Hashes a input using bcrypt.
+	 *
+	 * @param String input string to be hashed
+	 * @return String contains hashed input
+	 * @author Waldir Bertazzi Junior
+	**/	
 	function hash($input){
 		$hash = crypt($input, $this->generate_salt());
 		
-		if(strlen($hash) > 13) return $hash;
+		// hashed successful
+		if(strlen($hash) > 13)
+			return $hash;
+		
+		// hash failed.
 		return false;
 	}
 	
 	/**
-	 * Função que valida o password recebido com o hash do banco.
-	 *
-	 * @return booleano
-	 * @author Waldir Bertazzi Junior
-	 **/
-	public function compare($input, $hash_existente) {
-		$hash = crypt($input, $hash_existente);
-		return $hash === $hash_existente;
+	* Function that compares the input with the correspondent hash. The same input should return the same hash.
+	* Return true if the input is the same as the hashed input.
+	*
+	* @param String input string without hash
+	* @param String previous hashed string
+	* @return Boolean
+	* @author Waldir Bertazzi Junior
+	**/
+	public function compare($input, $hashed_string) {
+		$hash = crypt($input, $hashed_string);
+		
+		// return if the hashed string is the same
+		return $hash === $hashed_string;
 	}
+	
 	
 	function generate_salt(){
 		$salt = sprintf('$2a$%02d$', $this->times);
@@ -55,12 +72,12 @@ class Bcrypt {
 	}
 	
 	/**
-	 * Funcao que retorna bytes aleatorios de diferentes fontes
-	 *
-	 * @return random bytes
-	 * @param numero de bytes pra gerar
-	 * @author Waldir Bertazzi Junior
-	 **/
+	* Function that return random bytes from various sources.
+	*
+	* @return random bytes
+	* @param numero de bytes pra gerar
+	* @author Waldir Bertazzi Junior
+	**/
 	function get_random_bytes($count){
 		$bytes = '';
 		
@@ -96,21 +113,21 @@ class Bcrypt {
 			$bytes = substr($bytes, 0, $count);
 		}
 		
-	    return $bytes;
+		return $bytes;
 	}
 	
 	/**
-	 * Pedaco de codigo retirado da biblioteca PHP Password Hashing Framework
-	 *
-	 * @return void
-	 * @author PHP Password Hashing Framework
-	 * @link http://www.openwall.com/phpass/
-	 **/
+	* Function taken from PHP Password Hashing Framework
+	*
+	* @return void
+	* @author PHP Password Hashing Framework
+	* @link http://www.openwall.com/phpass/
+	**/
 	function encode_bytes($input){
 		$itoa64 = './ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-	    $output = '';
-	    $i = 0;
+		$output = '';
+		$i = 0;
 		do {
 			$c1 = ord($input[$i++]);
 			$output .= $itoa64[$c1 >> 2];
@@ -131,7 +148,7 @@ class Bcrypt {
 			$output .= $itoa64[$c2 & 0x3f];
 		} while (1);
 
-	    return $output;
+		return $output;
 	}
 	
 }
