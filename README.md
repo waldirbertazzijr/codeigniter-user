@@ -1,7 +1,7 @@
 # Codeigniter User Library V. 1.3
 This library is a *very simple* yet *powerful* user auth library for CodeIgniter, made for easy instalation and strong security. The library uses [Bcrypt](http://codahale.com/how-to-safely-store-a-password/) for hashing passwords to the database.
 ## Quick Start
-This is a quick guide to help you run your user system.
+This is a quick guide to help you run your user system. This tutorial implies that you have basic notion of codeigniter mechanism like libraries and controllers.
 
 * Import the _database schema.sql_ to your database.
 * Copy the libraries to your _application/libraries_ folder.
@@ -97,5 +97,9 @@ This function must be called after you changed the user's password in the databa
 	* Added password salting support.
 
 # Roadmap
-* Version 2.0
-	* Custom fields attached to each user.
+* Version 1.4
+	* Custom database fields.
+* Version 1.5
+	* "Remember-me" capacity.
+* Version 1.6
+	* Custom fields attached to each user, so you can choose where to put the info.
