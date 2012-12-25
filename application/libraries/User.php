@@ -233,10 +233,10 @@ class User {
 	function update_login($new_login){
 		// updates the session
 		$this->CI->session->set_userdata(array('login'=>$new_login));
-		$this->user_data->$this->user_database_login = $new_login;
+		$this->user_data->login = $new_login;
 		
 		// update the database
-		$sts = $this->CI->db->update($this->user_database, array($this->user_database_login=>$new_login));
+		$sts = $this->CI->db->update('user', array('login'=>$new_login));
 		
 		return $sts;
 	}
