@@ -12,7 +12,7 @@
 
 class User_manager {
 	
-	protected $CI;
+	private $CI;
 
 	function __construct(){
 		$this->CI =& get_instance();
@@ -60,17 +60,6 @@ class User_manager {
 			// Login already exists or full name is empty
 			return false;
 		}
-	}
-
-	/**
-	* Generate a random salt
-	*
-	* @return void
-	* @author Waldir Bertazzi Junior
-	**/
-	function generate_salt()
-	{
-		return hash('sha1', rand(1,1000000));
 	}
     
 	// Delete the user

@@ -70,8 +70,7 @@
     <h1>Welcome to the private page, <?php echo $this->user->get_name(); ?>!</h1>
 	<div id="body">
 
-		<p>You are now logged in as <strong><?php echo $this->user->get_name(); ?></strong> (ID #<?php echo $this->user->get_id(); ?>). Click <a href="<?php echo site_url('login/logout')?>">here</a> to logout. </p>
-        
+		<p>You are now logged in as <strong><?php echo $this->user->get_name(); ?></strong> (ID #<?php echo $this->user->get_id(); ?>). Click <a href="<?php echo site_url('login/logout')?>">here</a> to logout. </p>        
         <hr />
         <p>A dump of your session info:</p>
         <pre><?php echo var_dump($this->user->user_data); ?>

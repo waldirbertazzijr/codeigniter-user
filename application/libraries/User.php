@@ -1,18 +1,18 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
-* User Class
+* User Auth Class
 *
-* @author		Waldir Bertazzi Junior
-* @link		http://waldir.org/
+* @author	 	Waldir Bertazzi Junior
+* @link			http://waldir.org/
 */
 
 /*
-* This constant is used to make the login method
-* dont update the last login on database
-* This is only for optmization pruposes.
+* This constant is used to make the login 
+* keep the last login on the database.
 */
 define('DONT_UPDATE_LOGIN', false);
+
 define('PASSWORD_IS_HASHED', true);
 define('PASSWORD_IS_NOT_HASHED', false);
 
@@ -54,7 +54,10 @@ class User {
 	* @return int
 	*/
 	function get_id(){
-		return $this->user_data->id;
+		if (isset($this->user_data->id))
+			return $this->user_data->id;
+		else
+			return false;
 	}
 	
 	/**
@@ -63,7 +66,10 @@ class User {
 	* @return string
 	*/
 	function get_email(){
-		return $this->user_data->email;
+		if (isset($this->user_data->email))
+			return $this->user_data->email;
+		else
+			return false;
 	}
 	
 	/**
@@ -81,7 +87,10 @@ class User {
 	* @return string
 	*/
 	function get_name(){
-		return $this->user_data->name;
+		if (isset($this->user_data->name))
+			return $this->user_data->name;
+		else
+			return false;
 	}
 	
 	
@@ -140,11 +149,12 @@ class User {
 	*/
 	function login($login, $password, $update_last_login = true, $hashed_password = false){
 		$user_query = $this->CI->db->get_where('users', array('login'=>$login));
+		
 		if($user_query->num_rows()==1){
 			// get user from the database
 			$user_query = $user_query->row();
 			
-			// chekcs if user is active or not
+			// checks if user is active or not
 			if($user_query->active == 0) return false;
 
 			// validates hash
@@ -157,7 +167,8 @@ class User {
 			} else {
 				// password already hashed
 				$valid_password = $valid_password || ($user_query->password == $password);
-			}	
+			}
+			
 			if($valid_password){
 				// save the user data
 				$this->user_data = $user_query;
@@ -179,7 +190,7 @@ class User {
 				return false;
 			}
 		} else {
-			// Invalid credentials
+			// Invalid login
 			return false;
 		}
 	}

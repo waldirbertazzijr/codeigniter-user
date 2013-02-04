@@ -14,7 +14,7 @@ class Login extends CI_Controller {
 		parent::__construct();
 		
 		// Load the Library
-		$this->load->library('user');
+		$this->load->library(array('user', 'user_manager'));
         $this->load->helper('url');
 
 	}

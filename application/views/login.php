@@ -114,6 +114,8 @@
         <form action="<?php echo site_url('login/validate') ?>" method="post" id="login_form">
 			<h2>Demo Login Form</h2>
 			
+			<?php echo $this->user->get_id(); ?>
+			
             <div class="error_message"><?php echo $this->session->flashdata('error_message');?></div>
             <div class="success_message"><?php echo $this->session->flashdata('success_message');?></div>
 
