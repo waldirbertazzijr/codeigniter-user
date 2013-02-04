@@ -1,0 +1,35 @@
+# Arquivos Compilados #
+#######################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+*.mp3
+
+# Pacotes  #
+############
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Logs #
+########
+*.log
+
+# Arquivos do OS #
+##################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
