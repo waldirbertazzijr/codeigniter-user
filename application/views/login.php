@@ -1,9 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Welcome to CodeIgniter</title>
+	<title>Welcome to codeigniter-user Library!</title>
 
 	<style type="text/css">
 
@@ -103,9 +102,9 @@
 <body>
 
 <div id="container">
-	<h1>Codeigniter User Libray</h1>
+	<h1>codeigniter-user Library Demo</h1>
 	<div id="body">
-        <p>If you can see this page you have successfully installed the <strong>codeigniter-user</strong> library. <br />Here is a simple test form and logged page for you to play around.</p>
+        <p>If you can see this page you have successfully installed the <strong>codeigniter-user</strong> library. <br />There is a simple login form and a private page for you to play around.</p>
 		<p>If you try to access the <a href="<?php echo site_url('login/private_page'); ?>">private page</a> without login you can see the error below.</p>
         <div class="info">
             <p>Login: <strong>admin</strong></p>
@@ -118,7 +117,7 @@
 			
             <div class="error_message"><?php echo $this->session->flashdata('error_message');?></div>
             <div class="success_message"><?php echo $this->session->flashdata('success_message');?></div>
-
+			
             <p>
             <label for="login">User: </label>
             <input type="text" name="login" id="login" placeholder="Login" />

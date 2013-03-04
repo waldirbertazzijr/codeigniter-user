@@ -21,7 +21,7 @@ class Login extends CI_Controller {
 	
 	function index()
 	{		
-		// If user is already logged in, send it to main
+		// If user is already logged in, send it to private page
 		$this->user->on_valid_session('login/private_page');
 		
 		// Loads the login view
@@ -52,7 +52,6 @@ class Login extends CI_Controller {
 			redirect('login/private_page');
 		} else {
 			// Oh, holdon sir.
-			$this->session->set_flashdata('error_message', 'Invalid login or password.');
 			redirect('login');
 		}
 	}
@@ -60,12 +59,8 @@ class Login extends CI_Controller {
 	// Simple logout function
 	function logout()
 	{
-		// Remove user session.
-		$this->user->destroy_user();
-		
-		// Bye, thanks! :)
-		$this->session->set_flashdata('success_message', 'You are now logged out.');
-		redirect('login');
+		// Removes user session and redirects to login
+		$this->user->destroy_user('login');
 	}
 }
 ?>

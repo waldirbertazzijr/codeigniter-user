@@ -1,26 +1,29 @@
-# Codeigniter User Library V. 1.3
+# Codeigniter User Library V. 1.3.1
 This library is a *very simple* yet *powerful* user auth library for CodeIgniter, made for easy instalation and strong security. The library uses [Bcrypt](http://codahale.com/how-to-safely-store-a-password/) for hashing passwords to the database.
 ## Quick Start
-This is a quick guide to help you run your user system. This tutorial implies that you have basic notion of codeigniter mechanism like libraries and controllers.
+This is a quick start guide to help you run codeigniter-user. This tutorial implies that you have basic notion of codeigniter mechanism like libraries and controllers.
 
 * Import the _database schema.sql_ to your database.
-* Copy the libraries to your _application/libraries_ folder.
-* If you want to see the demo login page, marge all the files (including the views and controllers).
-* Change your encryption key on your application _config.php_ file and also set up your database connection config properly if you haven't yet.
+* Copy the libraries to your _application/libraries_ folder. It includes [Bcrypt](https://github.com/waldirbertazzijr/codeigniter-bcrypt) and the codeigniter-user itself.
+* Copy the language file under _language/english/codeigniter_user_lang.php_ to your own language folder. You also may wish to translate or change the strings there.
+* Change your encryption key on your application _config.php_ file.
 * Set up your database. This can be done on _database.php_, under config folder.
+* If you want to see the demo login page, marge all the files (including the views and controllers) included.
 * **If you installed the demo**, head to _index.php/login_ and try out your new user auth system.
 
 ## Usage
 Here is listed some of the most common actions when managin the user auth flow on your site. Examples of:
 ### Logging a user in
-You may put this in the "login" method.
+You may put this in the "login" method of your website.
 
+	// These variables may come from a form, for instance
 	if($this->user->login($login, $password)){
 		// user is now logged in, you may redirect it to the private page
 		redirect('private_page');
 	} else {
-		redirect('login_page', array('msg'=>'Invalid login or password!'));
+		redirect('login_page');
 	}
+
 ### Validating a session (user is logged in)
 You can create custom actions with this function.
 
@@ -36,7 +39,10 @@ Auto redirects if the user isn't logged in. The first parameter tells where to r
 ### Auto redirect on valid session
 Auto redirect function if the user is logged in. The first parameter tell where to redirect if theres a valid session (controller/method). Ideal for login pages.
 
-	$this->user->on_valid_session('home/login');
+	$this->user->on_valid_session('home');
+
+### Showing errors
+Codeigniter-user library uses two flashdata names for displaying errors.
 
 ### Get the current logged in name, id & email
 Simple way to retrieve the logged user name and login.
@@ -59,10 +65,9 @@ Checks if user has a permission. The first parameter is the permission name.
 
 
 ### Logout user
-Removes all session from browser. 
+Removes all session from browser and redirects the user to the received path.
 
-	$this->user->destroy_user();
-
+	$this->user->destroy_user('home/login');
 
 ### Change user password or login on the fly
 **After updating the database**, both login and password, this functions must be called right after for updating user session.
@@ -94,6 +99,9 @@ There is a separated library for user managing. After setting up the database co
 
 ---
 # Changelog
+* Version 1.3.1
+	* Added the language file outside the code.
+	* Logout method now receives the destiny controller for auto redirect.
 * Version 1.3
 	* Upgraded hash function to Bcrypt. Passwords are much safer and stronger now.
 	* Strong optimization on cookie password storage and hash comparison
@@ -107,7 +115,7 @@ There is a separated library for user managing. After setting up the database co
 
 # Roadmap
 * Version 1.4
-	* Custom database fields and names.
+	* Custom database fields and names for more flexibility.
 * Version 1.5
 	* "Remember-me" feature.
 * Version 1.6

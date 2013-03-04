@@ -1,7 +1,7 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
-* User Auth Class
+* Codeigniter User Class
 *
 * @author	 	Waldir Bertazzi Junior
 * @link			http://waldir.org/
@@ -43,8 +43,11 @@ class User {
 		}
 		// load session and bcrypt library.
 		$this->CI->load->library(array('session', 'bcrypt'));
+		
+		// Loads the language file for the library (more translations welcome)
+		$this->CI->lang->load('codeigniter_user', 'english');
 
-		// autoload user if it exists
+		// autoloads the user
 		$this->validate_session();
 	}
 	
@@ -104,8 +107,8 @@ class User {
 	*/
 	function on_invalid_session($destiny){
 		if(!$this->validate_session()){
-			$this->CI->session->set_flashdata('error_message', 'Invalid session.');
-			redirect($destiny);
+			$this->CI->session->set_flashdata('error_message', $this->CI->lang->line('error_invalid_session'));
+			redirect($destiny, 'refresh');
 		}
 	}
 	
@@ -118,9 +121,9 @@ class User {
 	*/
 	function on_valid_session($destiny){
 		if($this->validate_session()) {
-			// if its not logged we must clear the flashdata because it was filled on validate
-			$this->CI->session->set_flashdata('error_message', '');
-			redirect($destiny);
+			// if its not logged we must clear the flashdata because it was filled with 
+			// error message on validate
+			redirect($destiny, 'refresh');
 		}
 	}
 	
@@ -131,6 +134,9 @@ class User {
 	* @return boolean
 	*/
 	function validate_session(){
+		if (!$this->CI->session->userdata('logged')) {
+			return false;
+		}
 		// This function doesnt need to update the last_login on database.
 		if($this->login($this->CI->session->userdata('login'), $this->CI->session->userdata('pw'), DONT_UPDATE_LOGIN, PASSWORD_IS_HASHED)){
 			return true;
@@ -187,10 +193,12 @@ class User {
 				return true;
 			} else {
 				// invalid password
+				$this->CI->session->set_flashdata('error_message', $this->CI->lang->line('error_invalid_password'));
 				return false;
 			}
 		} else {
 			// Invalid login
+			$this->CI->session->set_flashdata('error_message', $this->CI->lang->line('error_invalid_login'));
 			return false;
 		}
 	}
@@ -277,12 +285,19 @@ class User {
 	* 
 	* @return boolean
 	*/
-	function destroy_user(){
+	function destroy_user($destiny){
 		// remove everything from the session
 		$this->CI->session->set_userdata(array('login'=>"", 'pw'=>"", 'logged'=>false));
 		$this->CI->session->sess_destroy();
+		
+		// just in case...
 		unset($this->user_data);
-		return true;
+		
+		// adds the logout message
+		$this->CI->session->set_flashdata('error_message', $this->CI->lang->line('success_logout'));
+		
+		// redirects the user to the destiny
+		redirect($destiny, 'refresh');
 	}
 	
 

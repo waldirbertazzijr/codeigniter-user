@@ -47,7 +47,7 @@ CREATE TABLE `users` (
 --
 
 LOCK TABLES `users` WRITE;
-INSERT INTO `users` VALUES (1,'Administrator','admin@localhost','admin','$2a$12$SR04o2/JNV5ZoVGZNgPiiezqM2f5D0eVDXsSDoWcfQqg/mST6O6Ye','2012-08-07',1);
+INSERT INTO `users` VALUES (1,'Administrator','admin@localhost','admin','$2a$12$SR04o2/JNV5ZoVGZNgPiiezqM2f5D0eVDXsSDoWcfQqg/mST6O6Ye','2000-01-01',1);
 UNLOCK TABLES;
 
 --
