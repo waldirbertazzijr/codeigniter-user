@@ -8,7 +8,7 @@ This is a quick start guide to help you run codeigniter-user. This tutorial impl
 * Copy the language file under _language/english/codeigniter_user_lang.php_ to your own language folder. You also may wish to translate or change the strings there.
 * Change your encryption key on your application _config.php_ file.
 * Set up your database. This can be done on _database.php_, under config folder.
-* If you want to see the demo login page, marge all the files (including the views and controllers) included.
+* If you want to see the demo page, marge all the files (including the views and controllers) included.
 * **If you installed the demo**, head to _index.php/login_ and try out your new user auth system.
 
 ## Usage
@@ -41,8 +41,14 @@ Auto redirect function if the user is logged in. The first parameter tell where 
 
 	$this->user->on_valid_session('home');
 
-### Showing errors
-Codeigniter-user library uses two flashdata names for displaying errors.
+### Displaying errors
+Codeigniter-user library uses two flashdata names for displaying errors. They are "error_message" for errors and "success_message" for successes. You may want to show them ahead the login form, for example:
+
+	<form id="login_form">
+		<div class="error_message"><?php echo $this->session->flashdata('error_message');?></div>
+		<div class="success_message"><?php echo $this->session->flashdata('success_message');?></div>
+		// the login inputs and buttons go here...
+	</form>
 
 ### Get the current logged in name, id & email
 Simple way to retrieve the logged user name and login.
