@@ -60,7 +60,7 @@
 	#container{
 		margin: 10px;
 		border: 1px solid #D0D0D0;
-		-webkit-box-shadow: 0 0 8px #D0D0D0;
+		box-shadow: 0 0 8px #D0D0D0;
 	}
 	</style>
 </head>
@@ -69,8 +69,8 @@
 <div id="container">
     <h1>Welcome to the private page, <?php echo $this->user->get_name(); ?>!</h1>
 	<div id="body">
-
-		<p>You are now logged in as <strong><?php echo $this->user->get_name(); ?></strong> (ID #<?php echo $this->user->get_id(); ?>). Click <a href="<?php echo site_url('login/logout')?>">here</a> to logout. </p>        
+		<p>You are now logged in as <strong><?php echo $this->user->get_name(); ?></strong> (ID #<?php echo $this->user->get_id(); ?>). Click <a href="<?php echo site_url('login/logout')?>">here to logout</a>.</p>
+		
         <hr />
         <p>A dump of your session info:</p>
         <pre><?php echo var_dump($this->user->user_data); ?>
@@ -80,6 +80,7 @@
         <pre><?php echo var_dump($this->user->user_permission); ?>
         </pre>
 	</div>
+	
 	<p class="footer">Library by <a href="http://waldir.org/">Waldir Bertazzi Junior</a>. Page rendered in <strong>{elapsed_time}</strong> seconds</p>
 </div>
 </body>

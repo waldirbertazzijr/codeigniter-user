@@ -32,7 +32,6 @@ class User {
 	* 
 	* Loads the session and crypt library.
 	* Also gets a instance of CI class.
-	* 
 	*/
 	function __construct(){
 		$this->CI =& get_instance();

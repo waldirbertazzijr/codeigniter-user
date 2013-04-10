@@ -60,15 +60,16 @@
 	#container{
 		margin: 10px;
 		border: 1px solid #D0D0D0;
-		-webkit-box-shadow: 0 0 8px #D0D0D0;
+		box-shadow: 0 0 8px #D0D0D0;
 	}
 
     #login_form {
         background: #eee;
         padding: 10px;
         width: 300px;
-		box-shadow: 0 1px 4px rgba(0,0,0,0.5);
+		border: 1px solid #aaa;
 		text-shadow: 0 1px 0 #fff;
+		border-radius: 4px;
     }
 
     #login_form label {
@@ -86,13 +87,13 @@
         margin: 0;
     }
 	.success_message {
-		background: rgba(40,10,255, 0.4);
+		background: rgba(10,10,255, 0.4);
 		color: #fff !important;
 		text-shadow: none;
 		padding: 0 5px;
 	}
 	.error_message {
-		background: rgba(255,10,40, 0.4);
+		background: rgba(255,10,10, 0.4);
 		color: #fff !important;
 		text-shadow: none;
 		padding: 0 5px;
@@ -126,7 +127,7 @@
             <input type="password" name="password" id="password" placeholder="Password" />
             </p>
 
-            <p><button value="send">Login</button></p>
+            <p><button value="send" class="btn">Login</button></p>
         </form>
 	</div>
 	<p class="footer">Library by <a href="http://waldir.org/">Waldir Bertazzi Junior</a>. Page rendered in <strong>{elapsed_time}</strong> seconds</p>

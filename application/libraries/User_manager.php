@@ -108,7 +108,7 @@ class User_manager {
 			return $exists->row()->id;
 		} else { 
 			$insert = $this->CI->db->insert('permissions', array('name'=>$permission_name, 'description'=>$permission_description));
-			if( $insert ) {
+			if($insert) {
 				return $this->CI->db->insert_id();
 			} else {
 				return FALSE;
