@@ -76,7 +76,7 @@ Removes all session from browser and redirects the user to the received path.
 	$this->user->destroy_user('home/login');
 
 ### Change user password or login on the fly
-**After updating the database**, both login and password, this functions must be called right after for updating user session.
+Call these functions for updating user's password or login. **Theres no need to update the database**.
 
 	// changing the user login and password with received data from form
 	$this->user->update_pw($this->input->post('new_password'));

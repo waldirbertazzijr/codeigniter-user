@@ -255,7 +255,7 @@ class User {
 		$this->user_data->login = $new_login;
 		
 		// update the database
-		$sts = $this->CI->db->update('user', array('login'=>$new_login));
+		$sts = $this->CI->db->update('users', array('login'=>$new_login));
 		
 		return $sts;
 	}
@@ -263,18 +263,21 @@ class User {
 	/**
 	* Update Password - In the case you made a form for the user to change its
 	* password, this function will change everything needed to maintain
-	* the user logged in. IT MUST BE HASHED.
+	* the user logged in.
 	*
 	* @param string $new_pw the new password
 	* @return boolean
 	*/
 	function update_pw($new_pw){
+		// hashes the password
+		$new_pw = $this->CI->bcrypt->hash($new_pw);
+		
 		// updates the session
 		$this->CI->session->set_userdata(array('pw'=>$new_pw));
-		$this->user_data->$this->user_database_password = $new_pw;
+		$this->user_data->password = $new_pw;
 		
 		// update the database
-		$sts = $this->CI->db->update($this->user_database, array($this->user_database_password=>$new_pw));
+		$sts = $this->CI->db->update('users', array('password'=>$new_pw));
 		
 		return $sts;
 	}
