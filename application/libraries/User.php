@@ -254,7 +254,7 @@ class User {
 		$this->user_data->login = $new_login;
 		
 		// update the database
-		$sts = $this->CI->db->update('users', array('login'=>$new_login));
+		$sts = $this->CI->db->update('users', array('login'=>$new_login), array('id'=>$this->get_id()));
 		
 		return $sts;
 	}
@@ -276,7 +276,7 @@ class User {
 		$this->user_data->password = $new_pw;
 		
 		// update the database
-		$sts = $this->CI->db->update('users', array('password'=>$new_pw));
+		$sts = $this->CI->db->update('users', array('password'=>$new_pw), array('id'=>$this->get_id());
 		
 		return $sts;
 	}
