@@ -294,6 +294,9 @@ class User {
 		
 		// just in case...
 		unset($this->user_data);
+
+   	    // CI 2.1.3 bug: after destroy session, can't set flashdata because session_id
+       $this->CI->session->sess_create();
 		
 		// adds the logout message
 		$this->CI->session->set_flashdata('error_message', $this->CI->lang->line('success_logout'));
