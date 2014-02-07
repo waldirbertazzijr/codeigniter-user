@@ -3,8 +3,8 @@
 /**
 * Codeigniter User Class
 *
-* @author	 	Waldir Bertazzi Junior
-* @link			http://waldir.org/
+* @author		Waldir Bertazzi Junior
+* @link 		http://waldir.org/
 */
 
 /*
@@ -24,7 +24,10 @@ class User {
 	*
 	* @var array
 	*/
-	public $user_data = array();
+	public $user_data			= array();
+	public $custom_data			= array();
+	public $user_permission		= array();
+	private $use_custom_fields	= true;
 	private $CI;
 
 	/**
@@ -160,7 +163,10 @@ class User {
 			$user_query = $user_query->row();
 			
 			// checks if user is active or not
-			if($user_query->active == 0) return false;
+			if($user_query->active == 0) {
+				$this->CI->session->set_flashdata('error_message', $this->CI->lang->line('error_inactive_account'));
+				return false;
+			}
 
 			// validates hash
 			$valid_password = false;
@@ -179,7 +185,10 @@ class User {
 				$this->user_data = $user_query;
 
 				//loads the user permissions
-				$this->_load_permission($this->user_data->id);
+				$this->_load_permission();
+				
+				//loads the user custom fields
+				$this->_load_custom_fields();
 
 				// create the user session
 				$this->_create_session($login, $user_query->password);
@@ -305,6 +314,38 @@ class User {
 		redirect($destiny, 'refresh');
 	}
 	
+	
+	/**
+	 * Add or modify (and save to database) a custom user information
+	 *
+	 * @return bool
+	 * @author Waldir Bertazzi Junior
+	 **/
+	function set_custom_field($user_id, $name, $value){
+		if (!$this->use_custom_fields) return false;
+		
+		$field = $this->CI->db->get_where('users_meta', array('user_id'=>$user_id, 'name'=>$name));
+		if($field->num_rows() == 0){
+			return $this->CI->db->insert('users_meta', array('user_id'=>$user_id, 'name'=>$name, 'value'=>$value));
+		} else {
+			return $this->CI->db->update('users_meta', array('user_id'=>$user_id, 'name'=>$name, 'value'=>$value), array('name'=>$name, 'user_id'=>$user_id));
+		}
+	}
+	
+	/**
+	 * Retrieve a custom user information
+	 *
+	 * @return string
+	 * @author Waldir Bertazzi Junior
+	 **/
+	function get_custom_field($name){
+		if (!$this->use_custom_fields) return false;
+		
+		if (isset($this->custom_data[$name]))
+			return $this->custom_data[$name];
+		else
+			return false;
+	}
 
 
 	/**
@@ -312,7 +353,8 @@ class User {
 	* 
 	* @return array
 	*/
-	private function _load_permission(){
+	private function _load_permission()
+	{
 		$permissions = $this->CI->db
 		->join('users_permissions', 'users_permissions.permission_id = permissions.id')
 		->get_where('permissions', array('users_permissions.user_id'=>$this->get_id()))
@@ -320,12 +362,33 @@ class User {
 		
 		$user_permissions = array();
 		
-		foreach($permissions as $permission){
-			$user_permissions[] = $permission->name;
-		}
+		foreach($permissions as $permission) $user_permissions[] = $permission->name;
+
 		$this->user_permission = $user_permissions;
 	}
-
+	
+	/**
+	 * Load Custom Fields - Aux function to load the user custom fields
+	 *
+	 * @return void
+	 * @author Waldir Bertazzi Junior
+	 **/
+	private function _load_custom_fields()
+	{
+		if (!$this->use_custom_fields) return false;
+		
+		$fields = $this->CI->db
+		->select('name, value')
+		->get_where('users_meta', array('users_meta.user_id'=>$this->get_id()))
+		->result();
+		
+		$custom_data = array();
+		
+		foreach ($fields as $field) $custom_data[$field->name] = $field->value;
+		
+		$this->custom_data = $custom_data;
+	}
+	
 	/**
 	* Create session - creates the session with valid data
 	* its used by the validate function.

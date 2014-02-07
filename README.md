@@ -1,9 +1,9 @@
-# Codeigniter User Library V. 1.3.1
+# Codeigniter User Library V. 1.4
 This library is a *very simple* yet *powerful* user auth library for CodeIgniter, made for easy instalation and strong security. The library uses [Bcrypt](http://codahale.com/how-to-safely-store-a-password/) for hashing passwords to the database.
 ## Quick Start
 This is a quick start guide to help you run codeigniter-user. This tutorial implies that you have basic notion of codeigniter mechanism like libraries and controllers.
 
-* Import the _database schema.sql_ to your database.
+* Import the _database schema.v1.3.sql_ and _database schema.v1.4.sql_ to your database.
 * Copy the libraries to your _application/libraries_ folder. It includes [Bcrypt](https://github.com/waldirbertazzijr/codeigniter-bcrypt) and the codeigniter-user itself.
 * Copy the language file under _language/english/codeigniter_user_lang.php_ to your own language folder. You also may wish to translate or change the strings there.
 * Change your encryption key on your application _config.php_ file.
@@ -82,6 +82,29 @@ Call these functions for updating user's password or login. **Theres no need to 
 	$this->user->update_pw($this->input->post('new_password'));
 	$this->user->update_login($this->input->post('new_login'););
 
+## Storing custom data
+*Atention: If you're not planning to use custom data, disable it. You'll be saved from some queries in the startup. You can disable it just by setting the attribute use_custom_fields from User class to false*
+You can set custom data for each users. They are all stored into a key-value table optimized with index for name for quick search.
+If you imported database_schema.sql for the first time, you have to import only the _database schema.v1.4.sql_ that contains some database constrains and the users_meta table.
+
+### Registering custom fields
+You can store individual custom data for each user. The data is accessible as an array inside user library. _Note that if custom data is disabled, this function will return false_. For store and update a field call:
+
+	// Let's save user address
+	$this->user->set_custom_field($this->user->get_id(), 'address_street',	$this->input->post('adress_street'));
+	$this->user->set_custom_field($this->user->get_id(), 'address_number',	$this->input->post('address_number'));
+	$this->user->set_custom_field($this->user->get_id(), 'address_state',	$this->input->post('address_state'));
+	$this->user->set_custom_field($this->user->get_id(), 'address_country',	$this->input->post('address_country'));
+
+### Retrieving custom fields
+You can retrieve any custom field as an array on current user's library. _Note that if custom data is disabled, this function will return false_.
+
+	<input value="<?php echo $this->user->get_custom_field('address_street'); ?>" id="user_address" />
+
+You can also access the data manually trough the array:
+	
+	// dumps all users custom data.
+	var_dump($this->user->user_data);
 
 ## Managing users
 There is a separated library for user managing. After setting up the database config, load up the user_manager library. There are some examples of:
@@ -105,6 +128,8 @@ There is a separated library for user managing. After setting up the database co
 
 ---
 # Changelog
+* Version 1.4
+	* Added custom fields, so each user can have a custom set of user data like address, city, country, etc. Please read the "Custom fields" topic above.
 * Version 1.3.1
 	* Added the language file outside the code.
 	* Logout method now receives the destiny controller for auto redirect.
@@ -120,9 +145,7 @@ There is a separated library for user managing. After setting up the database co
 	* Added password salting support.
 
 # Roadmap
-* Version 1.4
-	* Custom database fields and names for more flexibility.
 * Version 1.5
-	* "Remember-me" feature.
+	* Custom database fields and names for more flexibility.
 * Version 1.6
-	* Custom fields attached to each user, so you can choose where to put the info.
+	* "Remember-me" feature.

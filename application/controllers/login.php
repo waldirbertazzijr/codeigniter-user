@@ -16,11 +16,10 @@ class Login extends CI_Controller {
 		// Load the Library
 		$this->load->library(array('user', 'user_manager'));
         $this->load->helper('url');
-
 	}
 	
 	function index()
-	{		
+	{
 		// If user is already logged in, send it to private page
 		$this->user->on_valid_session('login/private_page');
 		
@@ -29,7 +28,7 @@ class Login extends CI_Controller {
 	}
 	
 	function private_page(){
-		// if user tries to direct access it will be sent to index
+		// if user tries to direct access it will be sent to login
 		$this->user->on_invalid_session('login');
 		
 		// ... else he will view home

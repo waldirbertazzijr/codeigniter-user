@@ -3,11 +3,11 @@
 /**
 * Bcrypt Class
 *
-* @package		Orion Project
+* @package 		Orion Project
 * @subpackage	Libraries
-* @category	Crypt
-* @author		Waldir Bertazzi Junior
-* @link		http://waldir.org/
+* @category		Crypt
+* @author 		Waldir Bertazzi Junior
+* @link 		http://waldir.org/
 */
 
 class Bcrypt {
@@ -75,7 +75,7 @@ class Bcrypt {
 	* Function that return random bytes from various sources.
 	*
 	* @return random bytes
-	* @param numero de bytes pra gerar
+	* @param number of bytes to generate
 	* @author Waldir Bertazzi Junior
 	**/
 	function get_random_bytes($count){

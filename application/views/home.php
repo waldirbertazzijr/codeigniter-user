@@ -73,16 +73,20 @@
 		
         <hr />
         <p>A dump of your session info:</p>
-        <pre><?php echo var_dump($this->user->user_data); ?>
-        </pre>
+        <pre><?php echo var_dump($this->user->user_data); ?></pre>
+		
         <hr />
         <p>A dump of your permissions:</p>
-        <pre><?php echo var_dump($this->user->user_permission); ?>
-        </pre>
+        <pre><?php echo var_dump($this->user->user_permission); ?></pre>
+		
+        <hr />
+        <p>A dump of this user custom fields:</p>
+		<p>Important: <a href="https://github.com/waldirbertazzijr/codeigniter-user#storing-custom-data">Read the documentation</a> for custom fields.</p>
+        <pre><?php echo var_dump($this->user->custom_data); ?></pre>	
+		
 	</div>
 	
 	<p class="footer">Library by <a href="http://waldir.org/">Waldir Bertazzi Junior</a>. Page rendered in <strong>{elapsed_time}</strong> seconds</p>
 </div>
 </body>
 </html>
-

@@ -7,7 +7,7 @@
 * @subpackage	Libraries
 * @category		Users
 * @author		Waldir Bertazzi Junior
-* @link			http://waldir.org/
+* @link 		http://waldir.org/
 */
 
 class User_manager {
