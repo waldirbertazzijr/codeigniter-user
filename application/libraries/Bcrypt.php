@@ -3,11 +3,11 @@
 /**
 * Bcrypt Class
 *
-* @package 		Orion Project
+* @package		Orion Project
 * @subpackage	Libraries
-* @category		Crypt
-* @author 		Waldir Bertazzi Junior
-* @link 		http://waldir.org/
+* @category	Crypt
+* @author		Waldir Bertazzi Junior
+* @link		http://waldir.org/
 */
 
 class Bcrypt {
@@ -16,12 +16,6 @@ class Bcrypt {
 	
 	function __construct($times = 12){
 		$this->CI =& get_instance();
-		
-		// Bcrypt not supported
-		if(CRYPT_BLOWFISH != 1) {
-			show_error('Bcrypt is not installed or is not supported in this system. You can read more about bcrypt support <a href="http://php.net/crypt">here</a>.');
-		}
-
 		$this->times = $times;
 	}
 	
@@ -75,7 +69,7 @@ class Bcrypt {
 	* Function that return random bytes from various sources.
 	*
 	* @return random bytes
-	* @param number of bytes to generate
+	* @param numero de bytes pra gerar
 	* @author Waldir Bertazzi Junior
 	**/
 	function get_random_bytes($count){
