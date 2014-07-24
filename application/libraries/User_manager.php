@@ -66,6 +66,22 @@ class User_manager {
 	function delete_user($user_id){
 		return $this->CI->db->delete('users', array('id'=>$user_id));
 	}
+	
+	// Updates arbitrary user login information
+	function update_login($new_login, $user_id) {
+		// update the database
+		return $this->CI->db->update('users', array('login'=>$new_login), array('id'=>$user_id));
+	}
+	
+	// Updates arbitrary user password
+	function update_pw($new_pw, $user_id) {
+		$new_pw = $this->CI->bcrypt->hash($new_pw);
+		
+		// update the database
+		$sts = $this->CI->db->update('users', array('password'=>$new_pw), array('id'=>$user_id));
+		
+		return $sts;
+	}
 
 	// Check if there is already a login with that name
 	function login_exists($login_name){

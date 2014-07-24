@@ -117,12 +117,23 @@ There is a separated library for user managing. After setting up the database co
 	$permissions = array(1, 3);
 	$new_user_id = $this->user_manager->save_user($fullname, $login, $password, $active, $permissions);
 
+### Updating existing user's password or login
+These functions have the same name that the ones on the main User class.
+
+	// Receives new user login information trough post
+	$user_id = $this->input->post('user_id');
+	$new_password = $this->input->post('new_password');
+	$new_login = $this->input->post('new_login');
+	
+	// Updates the user access information
+	$this->user_manager->update_login($new_login, $user_id);
+	$this->user_manager->update_pw($new_password, $user_id);
 
 ### Creating a permission
 	$permission_id = $this->user_manager->save_permission('editor', 'The editors of my website.');
 
 ### Deleting a user
-	if( $this->user_manager->delete_user($user_id)){
+	if($this->user_manager->delete_user($user_id)){
 		echo "User was deleted.";
 	}
 
@@ -130,6 +141,7 @@ There is a separated library for user managing. After setting up the database co
 # Changelog
 * Version 1.4
 	* Added custom fields, so each user can have a custom set of user data like address, city, country, etc. Please read the "Custom fields" topic above.
+	* Added change_pw and change_login on user_manager class.
 * Version 1.3.1
 	* Added the language file outside the code.
 	* Logout method now receives the destiny controller for auto redirect.
