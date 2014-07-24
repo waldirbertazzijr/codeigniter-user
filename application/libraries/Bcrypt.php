@@ -2,12 +2,10 @@
 
 /**
 * Bcrypt Class
+* Simple and easy to use bcrypt helper for Codeigniter
 *
-* @package		Orion Project
-* @subpackage	Libraries
-* @category	Crypt
-* @author		Waldir Bertazzi Junior
-* @link		http://waldir.org/
+* @author 		Waldir Bertazzi Junior
+* @link 		http://waldir.org/
 */
 
 class Bcrypt {
@@ -68,9 +66,9 @@ class Bcrypt {
 	/**
 	* Function that return random bytes from various sources.
 	*
-	* @return random bytes
-	* @param numero de bytes pra gerar
-	* @author Waldir Bertazzi Junior
+	* @return		random bytes
+	* @param		number of bytes to generate
+	* @author		Waldir Bertazzi Junior
 	**/
 	function get_random_bytes($count){
 		$bytes = '';
