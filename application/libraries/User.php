@@ -108,7 +108,7 @@ class User {
 	* 
 	*/
 	function on_invalid_session($destiny){
-		if(!$this->validate_session()){
+		if(!is_object($this->user_data) && !$this->validate_session()){
 			$this->CI->session->set_flashdata('error_message', $this->CI->lang->line('error_invalid_session'));
 			redirect($destiny, 'refresh');
 		}
@@ -122,7 +122,7 @@ class User {
 	*
 	*/
 	function on_valid_session($destiny){
-		if($this->validate_session()) {
+		if(is_object($this->user_data) && $this->validate_session()) {
 			// if its not logged we must clear the flashdata because it was filled with 
 			// error message on validate
 			redirect($destiny, 'refresh');
@@ -136,7 +136,7 @@ class User {
 	* @return boolean
 	*/
 	function validate_session(){
-		if (!$this->CI->session->userdata('logged')) {
+		if (!$this->CI->session->userdata('logged') && !is_object($this->user_data)) {
 			return false;
 		}
 		// This function doesnt need to update the last_login on database.
