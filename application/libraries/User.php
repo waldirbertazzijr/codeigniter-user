@@ -43,8 +43,9 @@ class User {
 		if(!isset($this->CI->db)){
 			show_error("Database library isn't loaded, please load it. It's recommended that you autoload it. Click <a href='http://codeigniter.com/user_guide/general/autoloader.html'>here</a> for more information about Codeigniter's autoloader.");
 		}
-		// load session and bcrypt library.
-		$this->CI->load->library(array('session', 'bcrypt'));
+		// load session driver and bcrypt library.
+		$this->CI->load->driver('session');
+		$this->CI->load->library('bcrypt');
 		
 		// Loads the language file for the library (more translations welcome)
 		$this->CI->lang->load('codeigniter_user', 'english');
