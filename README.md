@@ -6,7 +6,7 @@ This is a quick start guide to help you run codeigniter-user. This tutorial impl
 * Import the _database schema.v1.3.sql_ and _database schema.v1.4.sql_ to your database.
 * Copy the libraries to your _application/libraries_ folder. It includes [Bcrypt](https://github.com/waldirbertazzijr/codeigniter-bcrypt) and the codeigniter-user itself.
 * Copy the language file under _language/english/codeigniter_user_lang.php_ to your own language folder. You also may wish to translate or change the strings there.
-* Change your encryption key on your application _config.php_ file.
+* Change your encription key and your sess_save_path on your application _config.php_ file.
 * Set up your database. This can be done on _database.php_, under config folder.
 * If you want to see the demo page, marge all the files (including the views and controllers) included.
 * **If you installed the demo**, head to _index.php/login_ and try out your new user auth system.
