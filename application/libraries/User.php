@@ -298,15 +298,14 @@ class User {
 	* @return boolean
 	*/
 	function destroy_user($destiny){
+		// Regenerates and destroy old session
+		$this->CI->session->sess_regenerate(TRUE);
+		
 		// remove everything from the session
 		$this->CI->session->set_userdata(array('login'=>"", 'pw'=>"", 'logged'=>false));
-		$this->CI->session->sess_destroy();
 		
 		// just in case...
 		unset($this->user_data);
-
-		// CI 2.1.3 bug: after destroy session, can't set flashdata because session_id
-		$this->CI->session->sess_create();
 		
 		// adds the logout message
 		$this->CI->session->set_flashdata('success_message', $this->CI->lang->line('success_logout'));
