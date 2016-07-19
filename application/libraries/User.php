@@ -149,13 +149,23 @@ class User
     */
     public function validate_session()
     {
+		// This user isn't logged, surely
         if (!$this->CI->session->userdata('logged') && !is_object($this->user_data)) {
             return false;
         }
+		
+		// User already loaded, session already loaded. Saves some queries up.
+		if (is_object($this->user_data) && $this->CI->session->userdata('logged') == 1) {
+			return true;
+		}
+		
         // This function doesnt need to update the last_login on database.
+		// It will run only in the first request.
         if ($this->login($this->CI->session->userdata('login'), $this->CI->session->userdata('pw'), DONT_UPDATE_LOGIN, PASSWORD_IS_HASHED)) {
             return true;
         }
+		
+		// Oops...
         return false;
     }
     

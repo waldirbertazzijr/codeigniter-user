@@ -1,0 +1,27 @@
+{
+	"name": "waldirbertazzijr/codeigniter-user",
+	"description": "Codeigniter User Auth Library",
+	"keywords": [
+		"codeigniter",
+		"user",
+		"login",
+		"auth",
+		"session"
+	],
+	"homepage": "https://github.com/waldirbertazzijr/codeigniter-user/",
+	"type": "library",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Waldir Bertazzi Junior",
+			"email": "waldirbj@gmail.com",
+			"homepage": "https://waldirbertazzijr.com/"
+		}
+	],
+	"support" : {
+		"email" : "waldirbj@gmail.com"
+	},
+	"require": {
+		"php": ">=5.3.0"
+	}
+}
